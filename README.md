@@ -51,20 +51,18 @@ In the real-world, a criterion represents a condition that must be true for a co
 
 ### Query
 
-A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<Symbol, f64>`, where the `Symbol` is the unique key/identifier for the fact, and the `f64` is the fact's value.
+A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique key/identifier for the fact, and the `f64` is the fact's value.
 
 ```rs
-struct Query(BTreeMap<Symbol, f64>);
+struct Query(BTreeMap<String, f64>);
 ```
-
-> The *[`symbol`][symbol] Rust crate is used to implement globally interned strings, referred to in Mimir as "symbols".*
 
 ### Rules
 
-A `Rule` is a collection of criteria stored in a map (using symbols as keys). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`String`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule(BTreeMap<Symbol, Criterion>);
+struct Rule(BTreeMap<Symbol, Criterion>, String);
 ```
 
 #### Evaluating against queries
@@ -72,7 +70,7 @@ struct Rule(BTreeMap<Symbol, Criterion>);
 Rules can be evaluated against queries to determine if they are true given the current game world's state:
 
 ```rs
-let mut rule = Rule::new();
+let mut rule = Rule::new("You killed 5 enemies!".into());
 rule.insert("enemies_killed".into(), Criterion::eq(5.));
 
 let mut query = Query::new();
@@ -92,4 +90,3 @@ struct Ruleset(Vec<Rule>);
 ```
 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
-[symbol]: https://docs.rs/symbol/0.1.9/symbol/

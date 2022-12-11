@@ -1,6 +1,7 @@
 use float_cmp::approx_eq;
+use serde::{Serialize, Deserialize};
 
-#[derive(Clone, Copy, Debug, Default, PartialEq)]
+#[derive(Clone, Copy, Debug, Default, Serialize, Deserialize)]
 pub struct Criterion {
     pub gt: f64,
     pub gt_inclusive: bool,

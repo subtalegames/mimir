@@ -1,31 +1,31 @@
 use std::collections::BTreeMap;
 
-use symbol::Symbol;
+use serde::{Serialize, Deserialize};
 
 use crate::criterion::Criterion;
 
-#[derive(Default)]
-pub struct Query(BTreeMap<Symbol, f64>);
+#[derive(Default, Serialize, Deserialize)]
+pub struct Query(BTreeMap<String, f64>);
 
 impl Query {
     pub fn new() -> Self {
         Self(BTreeMap::new())
     }
 
-    pub fn insert(&mut self, symbol: Symbol, value: f64) {
+    pub fn insert(&mut self, symbol: String, value: f64) {
         self.0.insert(symbol, value);
     }
 }
 
-#[derive(Default)]
-pub struct Rule(BTreeMap<Symbol, Criterion>, String);
+#[derive(Default, Serialize, Deserialize)]
+pub struct Rule(BTreeMap<String, Criterion>, String);
 
 impl Rule {
     pub fn new(outcome: String) -> Self {
         Self(BTreeMap::new(), outcome)
     }
 
-    pub fn insert(&mut self, symbol: Symbol, criterion: Criterion) {
+    pub fn insert(&mut self, symbol: String, criterion: Criterion) {
         self.0.insert(symbol, criterion);
     }
 }
@@ -46,6 +46,7 @@ impl Rule {
     }
 }
 
+#[derive(Serialize, Deserialize)]
 pub struct Ruleset(Vec<Rule>);
 
 impl Ruleset {
