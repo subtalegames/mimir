@@ -1,0 +1,15 @@
+[package]
+name = "mimir"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+float-cmp = "0.9.0"
+symbol = "0.1.9"
+
+[dev-dependencies]
+criterion = "0.4.0"
+
+[[bench]]
+name = "criterion_evaluate"
+harness = false
