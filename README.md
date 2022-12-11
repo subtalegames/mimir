@@ -83,5 +83,13 @@ assert!(rule.evaluate(&query));
 
 In the above example, the rule evaluates to true for the supplied query because it's expecting 5 enemies to be killed (`enemies_killed`), and the query confirms the fact that 5 (`2.5 + 1.5 + 1`) have been killed.
 
+### Rulesets
+
+Rulesets are simply collections of rules (represented in Mimir as `Vec<Rule>`).
+
+```rs
+struct Ruleset(Vec<Rule>);
+```
+
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [symbol]: https://docs.rs/symbol/0.1.9/symbol/

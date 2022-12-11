@@ -1,6 +1,6 @@
 use float_cmp::approx_eq;
 
-#[derive(Default)]
+#[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct Criterion {
     pub gt: f64,
     pub gt_inclusive: bool,
