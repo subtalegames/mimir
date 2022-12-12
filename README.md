@@ -17,17 +17,15 @@ At a high-level, Mimir is simply a Rust implementation of Elan's proposed system
 A `Criterion` is simply a definition of a predicate on a double precision floating-point number (represented in Mimir using Rust's `f64` type).
 
 ```rs
-struct Criterion {
-  gt: f64,
-  gt_inclusive: bool,
-  lt: f64,
-  lt_inclusive: bool,
+enum Criterion {
+  EqualTo(f64),
+  LessThan(CriterionBound),
+  GreaterThan(CriterionBound),
+  InRange(CriterionBound, CriterionBound),
 }
 ```
 
-> *`f64::INFINITY` and `f64::NEG_INFINITY` must be used to indicate criteria with no upper or lower bound (respectively).*
->
-> *`gt_inclusive` and `lt_inclusive` must be used to indicate criteria with inclusive upper or lower bounds (respectively).*
+> *`CriterionBound` is an enum that holds a boundary value that can be inclusive (`CriterionBound::Inclusive(f64)`) or exclusive (`CriterionBound::Exclusive(f64)`).*
 
 #### Helper functions
 
@@ -35,11 +33,10 @@ Several helper functions are exposed to easily instantiate criteria with common 
 
 | Function             | Internal     | Equivalent to |
 | :------------------: | :----------: | :-----------: |
-| `Criterion::eq(5.)`  | `5 ≤ x ≤ 5`  | `x = 5`       |
-| `Criterion::lt(5.)`  | `-∞ ≤ x < 5` | `x < 5`       |
-| `Criterion::lte(5.)` | `-∞ ≤ x ≤ 5` | `x ≤ 5`       |
-| `Criterion::gt(5.)`  | `5 < x ≤ ∞`  | `x > 5`       |
-| `Criterion::gte(5.)` | `5 ≤ x ≤ ∞`  | `x ≥ 5`       |
+| `Criterion::lt(5.)`  | `Criterion::LessThan(CriterionBound::Exclusive(5.))` | `x < 5`       |
+| `Criterion::lte(5.)` | `Criterion::LessThan(CriterionBound::Inclusive(5.))` | `x ≤ 5`       |
+| `Criterion::gt(5.)`  | `Criterion::GreaterThan(CriterionBound::Exclusive(5.))`  | `x > 5`       |
+| `Criterion::gte(5.)` | `Criterion::GreaterThan(CriterionBound::Inclusive(5.))`  | `x ≥ 5`       |
 
 #### Real-world
 
@@ -51,7 +48,7 @@ In the real-world, a criterion represents a condition that must be true for a co
 
 ### Query
 
-A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique key/identifier for the fact, and the `f64` is the fact's value.
+A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
 struct Query(BTreeMap<String, f64>);
@@ -59,10 +56,10 @@ struct Query(BTreeMap<String, f64>);
 
 ### Rules
 
-A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`String`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome. Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule(BTreeMap<Symbol, Criterion>, String);
+struct Rule(BTreeMap<Symbol, Criterion>, Outcome);
 ```
 
 #### Evaluating against queries
@@ -70,7 +67,7 @@ struct Rule(BTreeMap<Symbol, Criterion>, String);
 Rules can be evaluated against queries to determine if they are true given the current game world's state:
 
 ```rs
-let mut rule = Rule::new("You killed 5 enemies!".into());
+let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
 rule.insert("enemies_killed".into(), Criterion::eq(5.));
 
 let mut query = Query::new();

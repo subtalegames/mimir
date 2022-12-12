@@ -18,11 +18,16 @@ impl Query {
     }
 }
 
-#[derive(Default, Serialize, Deserialize)]
-pub struct Rule(pub BTreeMap<String, Criterion>, String);
+#[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
+pub enum Outcome {
+    Debug(String),
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct Rule(pub BTreeMap<String, Criterion>, Outcome);
 
 impl Rule {
-    pub fn new(outcome: String) -> Self {
+    pub fn new(outcome: Outcome) -> Self {
         Self(BTreeMap::new(), outcome)
     }
 
@@ -86,7 +91,7 @@ mod tests {
 
     #[test]
     fn rule_evaluation() {
-        let mut rule = Rule::new("You killed 5 enemies!".to_owned());
+        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
         rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut query = Query::new();
@@ -97,7 +102,7 @@ mod tests {
 
     #[test]
     fn complex_rule_evaluation() {
-        let mut rule = Rule::new("You killed 5 enemies and opened 2 doors!".to_owned());
+        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
         rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
         rule.insert("doors_opened".into(), Criterion::gt(2.));
 
@@ -110,11 +115,11 @@ mod tests {
 
     #[test]
     fn rule_set_evaluation() {
-        let mut rule = Rule::new("You killed 5 enemies!".to_owned());
+        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
         rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut more_specific_rule =
-            Rule::new("You killed 5 enemies and opened 2 doors!".to_owned());
+            Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
         more_specific_rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
         more_specific_rule.insert("doors_opened".into(), Criterion::gt(2.));
 
@@ -124,8 +129,8 @@ mod tests {
         query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
         assert_eq!(
-            rule_set.evaluate_all(&query)[0].1.as_str(),
-            "You killed 5 enemies!"
+            rule_set.evaluate_all(&query)[0].1,
+            Outcome::Debug("You killed 5 enemies!".into())
         );
 
         let mut more_specific_query = Query::new();
@@ -133,8 +138,8 @@ mod tests {
         more_specific_query.insert("doors_opened".into(), 10.);
 
         assert_eq!(
-            rule_set.evaluate_all(&more_specific_query)[0].1.as_str(),
-            "You killed 5 enemies and opened 2 doors!"
+            rule_set.evaluate_all(&more_specific_query)[0].1,
+            Outcome::Debug("You killed 5 enemies and opened 2 doors!".into())
         );
     }
 }
