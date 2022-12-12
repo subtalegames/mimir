@@ -61,6 +61,10 @@ In the real-world, a criterion represents a condition that must be true for a co
 >
 > *It could also function inversely if the NPC is intentionally a hypocrite!*
 
+#### Floating-point equality comparison
+
+Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crate to perform approximate comparisons between criterion and fact values when `Criterion::EqualTo` is used.
+
 ### Query
 
 A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
