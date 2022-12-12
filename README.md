@@ -28,10 +28,10 @@ A `Criterion` is simply a definition of a predicate on a double precision floati
 
 ```rs
 enum Criterion {
-  EqualTo(f64),
-  LessThan(CriterionBound),
-  GreaterThan(CriterionBound),
-  InRange(CriterionBound, CriterionBound),
+    EqualTo(f64),
+    LessThan(CriterionBound),
+    GreaterThan(CriterionBound),
+    InRange(CriterionBound, CriterionBound),
 }
 ```
 
@@ -69,8 +69,8 @@ A query is a collection of facts about the current game world's state. Mímir re
 
 ```rs
 struct Query {
-  facts: BTreeMap<String, f64>,
-};
+    facts: BTreeMap<String, f64>,
+}
 ```
 
 ### Rule
@@ -79,9 +79,9 @@ A `Rule` is a collection of criteria stored in a map (using symbols as keys) wit
 
 ```rs
 struct Rule<T> {
-  criteria: BTreeMap<String, Criterion>,
-  pub outcome: T,
-};
+    criteria: BTreeMap<String, Criterion>,
+    pub outcome: T,
+}
 ```
 
 #### Evaluating against queries
@@ -108,8 +108,8 @@ Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule<T>>
 
 ```rs
 struct Ruleset<T> {
-  rules: Vec<Rule<T>>,
-};
+    rules: Vec<Rule<T>>,
+}
 ```
 
 #### Evaluating against queries
