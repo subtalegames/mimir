@@ -65,19 +65,22 @@ pub struct Ruleset<T> {
 }
 
 impl<T> Ruleset<T> {
-    pub fn from(mut rules: Vec<Rule<T>>) -> Self {
-        rules.sort_by_cached_key(|x| x.criteria.len());
-        rules.reverse();
+    fn sort(&mut self) {
+        self.rules.sort_by_cached_key(|x| x.criteria.len());
+        self.rules.reverse();
+    }
 
-        Self {
+    pub fn from(mut rules: Vec<Rule<T>>) -> Self {
+        let mut new = Self {
             rules,
-        }
+        };
+        new.sort();
+        new
     }
 
     pub fn append(&mut self, ruleset: &mut Ruleset<T>) {
         self.rules.append(&mut ruleset.rules);
-        self.rules.sort_by_cached_key(|x| x.criteria.len());
-        self.rules.reverse();
+        self.sort();
     }
 
     pub fn evaluate_all(&self, query: &Query) -> Vec<&Rule<T>> {
