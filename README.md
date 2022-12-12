@@ -72,7 +72,7 @@ struct Rule<T> {
 Rules can be evaluated against queries to determine if they are true given the current game world's state:
 
 ```rs
-let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
+let mut rule = Rule::new(true);
 rule.require("enemies_killed".into(), Criterion::eq(5.));
 
 let mut query = Query::new();
@@ -83,7 +83,7 @@ assert!(rule.evaluate(&query));
 
 In the above example, the rule evaluates to true for the supplied query because it's expecting 5 enemies to be killed (`enemies_killed`), and the query confirms the fact that 5 (`2.5 + 1.5 + 1`) have been killed.
 
-> *`Outcome` is just a simple enum that we use in the example for the generic outcome type (`T`)*.
+> *Our generic outcome type (`T`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).*
 
 ### Rulesets
 

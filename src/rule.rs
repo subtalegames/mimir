@@ -106,14 +106,9 @@ impl<T> Ruleset<T> {
 mod tests {
     use super::*;
 
-    #[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
-    pub enum Outcome {
-        Debug(String),
-    }
-
     #[test]
     fn rule_evaluation() {
-        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
+        let mut rule = Rule::new("You killed 5 enemies!");
         rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut query = Query::new();
@@ -124,7 +119,7 @@ mod tests {
 
     #[test]
     fn complex_rule_evaluation() {
-        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
+        let mut rule = Rule::new("You killed 5 enemies and opened 2 doors!");
         rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
         rule.require("doors_opened".into(), Criterion::gt(2.));
 
@@ -137,11 +132,11 @@ mod tests {
 
     #[test]
     fn rule_set_evaluation() {
-        let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
+        let mut rule = Rule::new("You killed 5 enemies!");
         rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut more_specific_rule =
-            Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
+            Rule::new("You killed 5 enemies and opened 2 doors!");
         more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
         more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
 
@@ -152,7 +147,7 @@ mod tests {
 
         assert_eq!(
             rule_set.evaluate_all(&query)[0].outcome,
-            Outcome::Debug("You killed 5 enemies!".into())
+           "You killed 5 enemies!"
         );
 
         let mut more_specific_query = Query::new();
@@ -161,7 +156,7 @@ mod tests {
 
         assert_eq!(
             rule_set.evaluate_all(&more_specific_query)[0].outcome,
-            Outcome::Debug("You killed 5 enemies and opened 2 doors!".into())
+            "You killed 5 enemies and opened 2 doors!"
         );
     }
 }
