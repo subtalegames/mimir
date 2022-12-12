@@ -2,6 +2,13 @@
 name = "mimir"
 version = "0.2.0"
 edition = "2021"
+authors = ["Luke Carr <luke@subtale.com>"]
+description = "Contextual query engine for dynamic video games"
+documentation = "https://github.com/subtalegames/mimir"
+homepage = "https://github.com/subtalegames/mimir"
+repository = "https://github.com/subtalegames/mimir"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
 
 [dependencies]
 float-cmp = "0.9.0"
