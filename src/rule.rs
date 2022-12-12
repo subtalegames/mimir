@@ -32,21 +32,25 @@ pub enum Outcome {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Rule(pub BTreeMap<String, Criterion>, Outcome);
-
-impl Rule {
-    pub fn new(outcome: Outcome) -> Self {
-        Self(BTreeMap::new(), outcome)
-    }
-
-    pub fn require(&mut self, fact: String, criterion: Criterion) {
-        self.0.insert(fact, criterion);
-    }
+pub struct Rule {
+    criteria: BTreeMap<String, Criterion>,
+    pub outcome: Outcome,
 }
 
 impl Rule {
+    pub fn new(outcome: Outcome) -> Self {
+        Self {
+            criteria: BTreeMap::new(),
+            outcome,
+        }
+    }
+
+    pub fn require(&mut self, fact: String, criterion: Criterion) {
+        self.criteria.insert(fact, criterion);
+    }
+
     pub fn evaluate(&self, query: &Query) -> bool {
-        for (fact, criterion) in &self.0 {
+        for (fact, criterion) in &self.criteria {
             if let Some(fact_value) = query.facts.get(fact) {
                 if !criterion.evaluate(*fact_value) {
                     return false;
@@ -67,7 +71,7 @@ pub struct Ruleset {
 
 impl Ruleset {
     pub fn from(mut rules: Vec<Rule>) -> Self {
-        rules.sort_by_cached_key(|x| x.0.len());
+        rules.sort_by_cached_key(|x| x.criteria.len());
         rules.reverse();
 
         Self {
@@ -75,11 +79,17 @@ impl Ruleset {
         }
     }
 
+    pub fn append(&mut self, ruleset: &mut Ruleset) {
+        self.rules.append(&mut ruleset.rules);
+        self.rules.sort_by_cached_key(|x| x.criteria.len());
+        self.rules.reverse();
+    }
+
     pub fn evaluate_all(&self, query: &Query) -> Vec<&Rule> {
         let mut matched = Vec::<&Rule>::new();
 
         for rule in self.rules.iter() {
-            if matched.get(0).map_or(0, |x| x.0.len()) <= rule.0.len() {
+            if matched.get(0).map_or(0, |x| x.criteria.len()) <= rule.criteria.len() {
                 if rule.evaluate(query) {
                     matched.push(rule);
                 }
@@ -141,7 +151,7 @@ mod tests {
         query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
         assert_eq!(
-            rule_set.evaluate_all(&query)[0].1,
+            rule_set.evaluate_all(&query)[0].outcome,
             Outcome::Debug("You killed 5 enemies!".into())
         );
 
@@ -150,7 +160,7 @@ mod tests {
         more_specific_query.fact("doors_opened".into(), 10.);
 
         assert_eq!(
-            rule_set.evaluate_all(&more_specific_query)[0].1,
+            rule_set.evaluate_all(&more_specific_query)[0].outcome,
             Outcome::Debug("You killed 5 enemies and opened 2 doors!".into())
         );
     }

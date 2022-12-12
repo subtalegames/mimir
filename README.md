@@ -51,7 +51,9 @@ In the real-world, a criterion represents a condition that must be true for a co
 A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
-struct Query(BTreeMap<String, f64>);
+struct Query {
+  facts: BTreeMap<String, f64>,
+};
 ```
 
 ### Rules
@@ -59,7 +61,10 @@ struct Query(BTreeMap<String, f64>);
 A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome. Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule(BTreeMap<Symbol, Criterion>, Outcome);
+struct Rule {
+  criteria: BTreeMap<Symbol, Criterion>,
+  pub outcome: Outcome,
+};
 ```
 
 #### Evaluating against queries
@@ -68,10 +73,10 @@ Rules can be evaluated against queries to determine if they are true given the c
 
 ```rs
 let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
-rule.insert("enemies_killed".into(), Criterion::eq(5.));
+rule.require("enemies_killed".into(), Criterion::eq(5.));
 
 let mut query = Query::new();
-query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
+query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
 assert!(rule.evaluate(&query));
 ```
@@ -83,7 +88,9 @@ In the above example, the rule evaluates to true for the supplied query because 
 Rulesets are simply collections of rules (represented in Mimir as `Vec<Rule>`).
 
 ```rs
-struct Ruleset(Vec<Rule>);
+struct Ruleset {
+  rules: Vec<Rule>,
+};
 ```
 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
