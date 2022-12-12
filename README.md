@@ -166,5 +166,13 @@ Because Mímir evaluates rulesets by returning the most specific rule for a give
 
 However, this does mean that care should be taken when invoking `ruleset.append(...)` to introduce more rules into a ruleset, as this function also triggers the underlying collection to be sorted again after the new rules are appended. *(Ideally, the rulesets should be manipulated during your game's loading state, and then only evaluated during your game's main loop.)*
 
+## Why Mímir?
+
+Quoting from [norse-mythology.org][mimir], Mímir is an exceptionally wise being and a counselor of the gods. We hope that this contextual query engine lives up to its name in being just as wise about your game's state and defined behaviours!
+
+*P.S. We also love all of the work done by the folks over at [Santa Monica Studio][sms] (especially 2018's reboot of God of War)!*
+
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [py-range]: https://docs.python.org/3/library/functions.html#func-range
+[mimir]: https://norse-mythology.org/gods-and-creatures/others/mimir/
+[sms]: https://sms.playstation.com
