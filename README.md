@@ -1,22 +1,22 @@
-# Mimir
+# Mímir
 
 [![Rust](https://github.com/subtalegames/mimir/actions/workflows/rust.yml/badge.svg)](https://github.com/subtalegames/mimir/actions/workflows/rust.yml)
 
 > 🧠 Contextual query engine for dynamic video games
 
-Mimir is a contextual query engine (implemented in Rust) for video games with dynamic "events" (e.g. dialog, animations) driven by the current world's "state" (context).
+Mímir is a contextual query engine (implemented in Rust) for video games with dynamic "events" (e.g. dialog, animations) driven by the current world's "state" (context).
 
 ## Inspiration
 
-Mimir (both in concept and general architecture) is heavily inspired by [Elan Ruskin's amazing session from GDC 2012 on AI-driven Dynamic Dialog][gdc].
+Mímir (both in concept and general architecture) is heavily inspired by [Elan Ruskin's amazing session from GDC 2012 on AI-driven Dynamic Dialog][gdc].
 
-At a high-level, Mimir is simply a Rust implementation of Elan's proposed system for dynamic dialog. However, Mimir does offer some differences and/or extensions that cater specifically to games developed internally at Subtale (documented below).
+At a high-level, Mímir is simply a Rust implementation of Elan's proposed system for dynamic dialog. However, Mímir does offer some differences and/or extensions that cater specifically to games developed internally at Subtale (documented below).
 
 ## Concepts
 
 ### Criterion
 
-A `Criterion` is simply a definition of a predicate on a double precision floating-point number (represented in Mimir using Rust's `f64` type).
+A `Criterion` is simply a definition of a predicate on a double precision floating-point number (represented in Mímir using Rust's `f64` type).
 
 ```rs
 enum Criterion {
@@ -47,13 +47,13 @@ Several helper functions are exposed to easily instantiate criteria with common 
 
 In the real-world, a criterion represents a condition that must be true for a contextual event to take place. However, events will typically have many criteria that need to evaluate to true, not just one!
 
-> For example, an NPC might query Mimir to ensure that they're only commenting on another NPC's behaviour if they've not exhibited the same behaviour previously (to avoid being hypocritical).
+> For example, an NPC might query Mímir to ensure that they're only commenting on another NPC's behaviour if they've not exhibited the same behaviour previously (to avoid being hypocritical).
 >
 > *It could also function inversely if the NPC is intentionally a hypocrite!*
 
 ### Query
 
-A query is a collection of "facts" about the current game world's state. Mimir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
+A query is a collection of "facts" about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
 struct Query {
@@ -92,7 +92,7 @@ In the above example, the rule evaluates to true for the supplied query because 
 
 ### Rulesets
 
-Rulesets are simply collections of rules (represented in Mimir as `Vec<Rule>`).
+Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule>`).
 
 ```rs
 struct Ruleset<T> {
