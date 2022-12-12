@@ -10,6 +10,7 @@ pub enum CriterionBound {
 #[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Criterion {
     EqualTo(f64),
+    NotEqualTo(f64),
     LessThan(CriterionBound),
     GreaterThan(CriterionBound),
     InRange(CriterionBound, CriterionBound),
@@ -19,6 +20,7 @@ impl Criterion {
     pub fn evaluate(self, value: f64) -> bool {
         match self {
             Self::EqualTo(x) => approx_eq!(f64, x, value),
+            Self::NotEqualTo(x) => !approx_eq!(f64, x, value),
             Self::LessThan(upper) => match upper {
                 CriterionBound::Exclusive(x) => value < x,
                 CriterionBound::Inclusive(x) => value <= x,
@@ -86,6 +88,14 @@ mod tests {
         assert!(criterion.evaluate(5.));
         assert!(criterion.evaluate(1. + 1.5 + 2.5));
         assert!(!criterion.evaluate(1.005 + 1.5 + 2.5));
+    }
+    
+    #[test]
+    fn not_equal_to() {
+        let criterion = Criterion::NotEqualTo(5.);
+        assert!(!criterion.evaluate(5.));
+        assert!(!criterion.evaluate(1. + 1.5 + 2.5));
+        assert!(criterion.evaluate(1.005 + 1.5 + 2.5));
     }
 
     #[test]
