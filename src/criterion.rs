@@ -59,6 +59,10 @@ impl Criterion {
     pub fn gte(value: f64) -> Criterion {
         Self::GreaterThan(CriterionBound::Inclusive(value))
     }
+
+    pub fn range(lower: f64, upper: f64) -> Criterion {
+        Self::InRange(CriterionBound::Inclusive(lower), CriterionBound::Exclusive(upper))
+    }
 }
 
 #[cfg(test)]

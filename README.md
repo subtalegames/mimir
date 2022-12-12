@@ -37,6 +37,9 @@ Several helper functions are exposed to easily instantiate criteria with common 
 | `Criterion::lte(5.)` | `Criterion::LessThan(CriterionBound::Inclusive(5.))` | `x ≤ 5`       |
 | `Criterion::gt(5.)`  | `Criterion::GreaterThan(CriterionBound::Exclusive(5.))`  | `x > 5`       |
 | `Criterion::gte(5.)` | `Criterion::GreaterThan(CriterionBound::Inclusive(5.))`  | `x ≥ 5`       |
+| `Criterion::range(5., 10.)`* | `Criterion::InRange(CriterionBound::Inclusive(5.), CriterionBound::Exclusive(10.))` | `5 ≤ x < 10` |
+
+*: `Criterion::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
 
 #### Real-world
 
@@ -96,3 +99,4 @@ struct Ruleset<T> {
 ```
 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
+[py-range]: https://docs.python.org/3/library/functions.html#func-range
