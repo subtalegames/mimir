@@ -29,6 +29,7 @@ A `Criterion` is simply a definition of a predicate on a double precision floati
 ```rs
 enum Criterion {
     EqualTo(f64),
+    NotEqualTo(f64),
     LessThan(CriterionBound),
     GreaterThan(CriterionBound),
     InRange(CriterionBound, CriterionBound),
