@@ -2,9 +2,7 @@
 
 [![Rust](https://github.com/subtalegames/mimir/actions/workflows/rust.yml/badge.svg)](https://github.com/subtalegames/mimir/actions/workflows/rust.yml)
 
-> 🧠 Contextual query engine for dynamic video games
-
-Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by the current world's state.
+> Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by the current world's state.
 
 ## Inspiration
 
