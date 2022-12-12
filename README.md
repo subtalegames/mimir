@@ -62,7 +62,7 @@ In the real-world, a criterion represents a condition that must be true for a co
 
 #### Floating-point equality comparison
 
-Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crate to perform approximate comparisons between criterion and fact values when `Criterion::EqualTo` is used.
+Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crate to perform approximate comparisons between criterion and fact values when `Criterion::EqualTo` (and `Criterion::NotEqualTo`) is used.
 
 ### Query
 
