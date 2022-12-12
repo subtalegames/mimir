@@ -1,13 +1,13 @@
 use float_cmp::approx_eq;
 use serde::{Deserialize, Serialize};
 
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub enum CriterionBound {
     Exclusive(f64),
     Inclusive(f64),
 }
 
-#[derive(Clone, Copy, Debug, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, PartialEq, Serialize, Deserialize)]
 pub enum Criterion {
     EqualTo(f64),
     LessThan(CriterionBound),
@@ -70,7 +70,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn comparison() {
+    fn in_range() {
         let criterion = Criterion::InRange(
             CriterionBound::Exclusive(5.),
             CriterionBound::Inclusive(25.),
@@ -81,10 +81,76 @@ mod tests {
     }
 
     #[test]
-    fn eq() {
+    fn equal_to() {
         let criterion = Criterion::EqualTo(5.);
         assert!(criterion.evaluate(5.));
         assert!(criterion.evaluate(1. + 1.5 + 2.5));
         assert!(!criterion.evaluate(1.005 + 1.5 + 2.5));
+    }
+
+    #[test]
+    fn less_than_exclusive() {
+        let criterion = Criterion::LessThan(CriterionBound::Exclusive(5.));
+        assert!(!criterion.evaluate(5.));
+        assert!(criterion.evaluate(1. + 1. + 2.5));
+        assert!(!criterion.evaluate(6.));
+        assert!(criterion.evaluate(-1.));
+    }
+
+    #[test]
+    fn less_than_inclusive() {
+        let criterion = Criterion::LessThan(CriterionBound::Inclusive(5.));
+        assert!(criterion.evaluate(5.));
+        assert!(criterion.evaluate(1. + 1. + 2.5));
+        assert!(!criterion.evaluate(6.));
+        assert!(criterion.evaluate(-1.));
+    }
+
+    #[test]
+    fn greater_than_exclusive() {
+        let criterion = Criterion::GreaterThan(CriterionBound::Exclusive(5.));
+        assert!(!criterion.evaluate(5.));
+        assert!(!criterion.evaluate(1. + 1. + 2.5));
+        assert!(criterion.evaluate(6.));
+        assert!(!criterion.evaluate(-1.));
+    }
+
+    #[test]
+    fn greater_than_inclusive() {
+        let criterion = Criterion::GreaterThan(CriterionBound::Inclusive(5.));
+        assert!(criterion.evaluate(5.));
+        assert!(!criterion.evaluate(1. + 1. + 2.5));
+        assert!(criterion.evaluate(6.));
+        assert!(!criterion.evaluate(-1.));
+    }
+
+    #[test]
+    fn lt_helper() {
+        let criterion = Criterion::lt(5.);
+        assert_eq!(criterion, Criterion::LessThan(CriterionBound::Exclusive(5.)));
+    }
+
+    #[test]
+    fn lte_helper() {
+        let criterion = Criterion::lte(5.);
+        assert_eq!(criterion, Criterion::LessThan(CriterionBound::Inclusive(5.)));
+    }
+
+    #[test]
+    fn gt_helper() {
+        let criterion = Criterion::gt(5.);
+        assert_eq!(criterion, Criterion::GreaterThan(CriterionBound::Exclusive(5.)));
+    }
+
+    #[test]
+    fn gte_helper() {
+        let criterion = Criterion::gte(5.);
+        assert_eq!(criterion, Criterion::GreaterThan(CriterionBound::Inclusive(5.)));
+    }
+
+    #[test]
+    fn range_helper() {
+        let criterion = Criterion::range(5., 25.);
+        assert_eq!(criterion, Criterion::InRange(CriterionBound::Inclusive(5.), CriterionBound::Exclusive(25.)));
     }
 }
