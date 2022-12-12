@@ -13,7 +13,13 @@ readme = "README.md"
 [dependencies]
 float-cmp = "0.9.0"
 rand = "0.8.5"
-serde = { version = "1.0", features = ["derive"] }
+
+[dependencies.serde_crate]
+package = "serde"
+optional = true
+version = "1.0"
+default-features = false
+features = ["derive"]
 
 [dev-dependencies]
 criterion = "0.4.0"
@@ -21,3 +27,6 @@ criterion = "0.4.0"
 [[bench]]
 name = "criterion_evaluate"
 harness = false
+
+[features]
+serde = ["serde_crate"]

@@ -1,11 +1,17 @@
 use std::collections::BTreeMap;
 
 use rand::seq::SliceRandom;
+#[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
 use crate::criterion::Criterion;
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Default)]
+#[cfg_attr(
+    feature = "serde",
+    derive(Serialize, Deserialize),
+    serde(crate = "serde_crate")
+)]
 pub struct Query {
     facts: BTreeMap<String, f64>,
 }
@@ -26,7 +32,11 @@ impl Query {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[cfg_attr(
+    feature = "serde",
+    derive(Serialize, Deserialize),
+    serde(crate = "serde_crate")
+)]
 pub struct Rule<T> {
     criteria: BTreeMap<String, Criterion>,
     pub outcome: T,
@@ -59,7 +69,11 @@ impl<T> Rule<T> {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[cfg_attr(
+    feature = "serde",
+    derive(Serialize, Deserialize),
+    serde(crate = "serde_crate")
+)]
 pub struct Ruleset<T> {
     rules: Vec<Rule<T>>,
 }
@@ -71,9 +85,7 @@ impl<T> Ruleset<T> {
     }
 
     pub fn from(rules: Vec<Rule<T>>) -> Self {
-        let mut new = Self {
-            rules,
-        };
+        let mut new = Self { rules };
         new.sort();
         new
     }
@@ -138,8 +150,7 @@ mod tests {
         let mut rule = Rule::new("You killed 5 enemies!");
         rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 
-        let mut more_specific_rule =
-            Rule::new("You killed 5 enemies and opened 2 doors!");
+        let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
         more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
         more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
 
@@ -150,7 +161,7 @@ mod tests {
 
         assert_eq!(
             ruleset.evaluate_all(&query)[0].outcome,
-           "You killed 5 enemies!"
+            "You killed 5 enemies!"
         );
 
         let mut more_specific_query = Query::new();

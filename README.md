@@ -151,7 +151,14 @@ The first query evaluates to the simpler rule, because the query does not satisf
 
 ## Serialization
 
-Criteria (including bounds), rules, and rulesets are all (de)serializable using [serde](https://serde.rs/). This makes it easy for you to serialize rulesets into a persistent medium (i.e. files) during your game's development process, bundle them with your game, and deserialize them at runtime.
+Criteria (including bounds), rules, and rulesets are all (de)serializable using [serde](https://serde.rs/) if you enable the respective feature in your project's `Cargo.toml`:
+
+```toml
+[dependencies]
+mimir = { version = "x.x.x", features = ["serde"] }
+```
+
+This makes it easy for you to serialize rulesets into a persistent medium (i.e. files) during your game's development process, bundle them with your game, and deserialize them at runtime.
 
 > *This also means that Mímir can effortlessly support modding by allowing you to deserialize and load user-defined rulesets at runtime.*
 
