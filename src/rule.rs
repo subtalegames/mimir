@@ -26,19 +26,14 @@ impl Query {
     }
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
-pub enum Outcome {
-    Debug(String),
-}
-
 #[derive(Serialize, Deserialize)]
-pub struct Rule {
+pub struct Rule<T> {
     criteria: BTreeMap<String, Criterion>,
-    pub outcome: Outcome,
+    pub outcome: T,
 }
 
-impl Rule {
-    pub fn new(outcome: Outcome) -> Self {
+impl<T> Rule<T> {
+    pub fn new(outcome: T) -> Self {
         Self {
             criteria: BTreeMap::new(),
             outcome,
@@ -65,12 +60,12 @@ impl Rule {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Ruleset {
-    rules: Vec<Rule>,
+pub struct Ruleset<T> {
+    rules: Vec<Rule<T>>,
 }
 
-impl Ruleset {
-    pub fn from(mut rules: Vec<Rule>) -> Self {
+impl<T> Ruleset<T> {
+    pub fn from(mut rules: Vec<Rule<T>>) -> Self {
         rules.sort_by_cached_key(|x| x.criteria.len());
         rules.reverse();
 
@@ -79,14 +74,14 @@ impl Ruleset {
         }
     }
 
-    pub fn append(&mut self, ruleset: &mut Ruleset) {
+    pub fn append(&mut self, ruleset: &mut Ruleset<T>) {
         self.rules.append(&mut ruleset.rules);
         self.rules.sort_by_cached_key(|x| x.criteria.len());
         self.rules.reverse();
     }
 
-    pub fn evaluate_all(&self, query: &Query) -> Vec<&Rule> {
-        let mut matched = Vec::<&Rule>::new();
+    pub fn evaluate_all(&self, query: &Query) -> Vec<&Rule<T>> {
+        let mut matched = Vec::<&Rule<T>>::new();
 
         for rule in self.rules.iter() {
             if matched.get(0).map_or(0, |x| x.criteria.len()) <= rule.criteria.len() {
@@ -101,7 +96,7 @@ impl Ruleset {
         matched
     }
 
-    pub fn evaluate(&self, query: &Query) -> Option<&Rule> {
+    pub fn evaluate(&self, query: &Query) -> Option<&Rule<T>> {
         let matched = self.evaluate_all(query);
         matched.choose(&mut rand::thread_rng()).copied()
     }
@@ -110,6 +105,11 @@ impl Ruleset {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[derive(Serialize, Deserialize, PartialEq, Eq, Debug)]
+    pub enum Outcome {
+        Debug(String),
+    }
 
     #[test]
     fn rule_evaluation() {

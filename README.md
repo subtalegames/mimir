@@ -58,12 +58,12 @@ struct Query {
 
 ### Rules
 
-A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome. Every criterion in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`T`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule {
+struct Rule<T> {
   criteria: BTreeMap<String, Criterion>,
-  pub outcome: Outcome,
+  pub outcome: T,
 };
 ```
 
@@ -83,13 +83,15 @@ assert!(rule.evaluate(&query));
 
 In the above example, the rule evaluates to true for the supplied query because it's expecting 5 enemies to be killed (`enemies_killed`), and the query confirms the fact that 5 (`2.5 + 1.5 + 1`) have been killed.
 
+> *`Outcome` is just a simple enum that we use in the example for the generic outcome type (`T`)*.
+
 ### Rulesets
 
 Rulesets are simply collections of rules (represented in Mimir as `Vec<Rule>`).
 
 ```rs
-struct Ruleset {
-  rules: Vec<Rule>,
+struct Ruleset<T> {
+  rules: Vec<Rule<T>>,
 };
 ```
 
