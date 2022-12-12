@@ -146,5 +146,15 @@ In the above example, we define a ruleset with two rules. Both rules require tha
 
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains less criteria).
 
+## Performance
+
+> 🚧 Please note that while Mímir is in a pre-release state (<1.0.0), this section is a WIP and constantly evolving.
+
+### Ruleset storage
+
+Because Mímir evaluates rulesets by returning the most specific rule for a given query, the rules are stored in descending order of criteria length. This avoids scanning the entire ruleset for matching rules, as the first rules in the underlying collection are the most specific.
+
+However, this does mean that care should be taken when invoking `ruleset.append(...)` to introduce more rules into a ruleset, as this function also triggers the underlying collection to be sorted again after the new rules are appended. *(Ideally, the rulesets should be manipulated during your game's loading state, and then only evaluated during your game's main loop.)*
+
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [py-range]: https://docs.python.org/3/library/functions.html#func-range
