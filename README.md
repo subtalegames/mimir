@@ -4,7 +4,7 @@
 
 > 🧠 Contextual query engine for dynamic video games
 
-Mímir is a contextual query engine (implemented in Rust) for video games with dynamic "events" (e.g. dialog, animations) driven by the current world's "state" (context).
+Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by the current world's state.
 
 ## Inspiration
 
@@ -149,6 +149,12 @@ assert_eq!(
 In the above example, we define a ruleset with two rules. Both rules require that 5 enemies have been killed, but one rule is more specific (also requiring that more than 2 doors have been opened).
 
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains less criteria).
+
+## Serialization
+
+Criteria (including bounds), rules, and rulesets are all (de)serializable using [serde](https://serde.rs/). This makes it easy for you to serialize rulesets into a persistent medium (i.e. files) during your game's development process, bundle them with your game, and deserialize them at runtime.
+
+> *This also means that Mímir can effortlessly support modding by allowing you to deserialize and load user-defined rulesets at runtime.*
 
 ## Performance
 
