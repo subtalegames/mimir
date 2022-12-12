@@ -122,13 +122,13 @@ let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!
 more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
 
-let rule_set = Ruleset::from(vec![rule, more_specific_rule]);
+let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
 let mut query = Query::new();
 query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
 assert_eq!(
-    rule_set.evaluate_all(&query)[0].outcome,
+    ruleset.evaluate_all(&query)[0].outcome,
     "You killed 5 enemies!"
 );
 
@@ -137,7 +137,7 @@ more_specific_query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 more_specific_query.fact("doors_opened".into(), 10.);
 
 assert_eq!(
-    rule_set.evaluate_all(&more_specific_query)[0].outcome,
+    ruleset.evaluate_all(&more_specific_query)[0].outcome,
     "You killed 5 enemies and opened 2 doors!"
 );
 ```
