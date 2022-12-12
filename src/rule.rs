@@ -6,15 +6,23 @@ use serde::{Deserialize, Serialize};
 use crate::criterion::Criterion;
 
 #[derive(Default, Serialize, Deserialize)]
-pub struct Query(pub BTreeMap<String, f64>);
+pub struct Query {
+    facts: BTreeMap<String, f64>,
+}
 
 impl Query {
     pub fn new() -> Self {
-        Self(BTreeMap::new())
+        Self {
+            facts: BTreeMap::new(),
+        }
     }
 
-    pub fn insert(&mut self, symbol: String, value: f64) {
-        self.0.insert(symbol, value);
+    pub fn fact(&mut self, fact: String, value: f64) {
+        self.facts.insert(fact, value);
+    }
+
+    pub fn append(&mut self, query: &mut Query) {
+        self.facts.append(&mut query.facts);
     }
 }
 
@@ -31,16 +39,16 @@ impl Rule {
         Self(BTreeMap::new(), outcome)
     }
 
-    pub fn insert(&mut self, symbol: String, criterion: Criterion) {
-        self.0.insert(symbol, criterion);
+    pub fn require(&mut self, fact: String, criterion: Criterion) {
+        self.0.insert(fact, criterion);
     }
 }
 
 impl Rule {
     pub fn evaluate(&self, query: &Query) -> bool {
-        for (rule, criterion) in &self.0 {
-            if let Some(fact) = query.0.get(rule) {
-                if !criterion.evaluate(*fact) {
+        for (fact, criterion) in &self.0 {
+            if let Some(fact_value) = query.facts.get(fact) {
+                if !criterion.evaluate(*fact_value) {
                     return false;
                 }
             } else {
@@ -53,20 +61,24 @@ impl Rule {
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct Ruleset(pub Vec<Rule>);
+pub struct Ruleset {
+    rules: Vec<Rule>,
+}
 
 impl Ruleset {
-    pub fn from(mut vec: Vec<Rule>) -> Self {
-        vec.sort_by_cached_key(|x| x.0.len());
-        vec.reverse();
+    pub fn from(mut rules: Vec<Rule>) -> Self {
+        rules.sort_by_cached_key(|x| x.0.len());
+        rules.reverse();
 
-        Self(vec)
+        Self {
+            rules,
+        }
     }
 
     pub fn evaluate_all(&self, query: &Query) -> Vec<&Rule> {
         let mut matched = Vec::<&Rule>::new();
 
-        for rule in self.0.iter() {
+        for rule in self.rules.iter() {
             if matched.get(0).map_or(0, |x| x.0.len()) <= rule.0.len() {
                 if rule.evaluate(query) {
                     matched.push(rule);
@@ -92,10 +104,10 @@ mod tests {
     #[test]
     fn rule_evaluation() {
         let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
-        rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
+        rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut query = Query::new();
-        query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
+        query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
         assert!(rule.evaluate(&query));
     }
@@ -103,12 +115,12 @@ mod tests {
     #[test]
     fn complex_rule_evaluation() {
         let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
-        rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
-        rule.insert("doors_opened".into(), Criterion::gt(2.));
+        rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
+        rule.require("doors_opened".into(), Criterion::gt(2.));
 
         let mut query = Query::new();
-        query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
-        query.insert("doors_opened".into(), 10.);
+        query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+        query.fact("doors_opened".into(), 10.);
 
         assert!(rule.evaluate(&query));
     }
@@ -116,17 +128,17 @@ mod tests {
     #[test]
     fn rule_set_evaluation() {
         let mut rule = Rule::new(Outcome::Debug("You killed 5 enemies!".into()));
-        rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
+        rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
 
         let mut more_specific_rule =
             Rule::new(Outcome::Debug("You killed 5 enemies and opened 2 doors!".into()));
-        more_specific_rule.insert("enemies_killed".into(), Criterion::EqualTo(5.));
-        more_specific_rule.insert("doors_opened".into(), Criterion::gt(2.));
+        more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
+        more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
 
         let rule_set = Ruleset::from(vec![rule, more_specific_rule]);
 
         let mut query = Query::new();
-        query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
+        query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
 
         assert_eq!(
             rule_set.evaluate_all(&query)[0].1,
@@ -134,8 +146,8 @@ mod tests {
         );
 
         let mut more_specific_query = Query::new();
-        more_specific_query.insert("enemies_killed".into(), 2.5 + 1.5 + 1.);
-        more_specific_query.insert("doors_opened".into(), 10.);
+        more_specific_query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+        more_specific_query.fact("doors_opened".into(), 10.);
 
         assert_eq!(
             rule_set.evaluate_all(&more_specific_query)[0].1,
