@@ -62,7 +62,7 @@ A `Rule` is a collection of criteria stored in a map (using symbols as keys) wit
 
 ```rs
 struct Rule {
-  criteria: BTreeMap<Symbol, Criterion>,
+  criteria: BTreeMap<String, Criterion>,
   pub outcome: Outcome,
 };
 ```
