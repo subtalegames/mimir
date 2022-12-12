@@ -12,6 +12,16 @@ Mímir (both in concept and general architecture) is heavily inspired by [Elan R
 
 At a high-level, Mímir is simply a Rust implementation of Elan's proposed system for dynamic dialog. However, Mímir does offer some differences and/or extensions that cater specifically to games developed internally at Subtale (documented below).
 
+## High-level overview
+
+Your game's world is defined as a collection of "facts": the player killed `x` amount of enemies, `x` NPC has opened `y` amount of doors, the player is currently near `x` NPC, etc.
+
+In Mímir, facts are collected together into a map, where the map's key is the unique identifier/name of the fact, and the map's value is the fact's value (represented as a `f64`). This map of facts is known as a `Query`.
+
+Your game also has predefined `Rule`s that define behaviour that should occur when one or more facts are true. We represent rules as a map, where the map's key is the unique identifier/name of the fact, and the map's value is a criterion (see below) that acts as a predicate on the fact's value.
+
+Finally, rules can be stored together in collections known as `Ruleset`s. Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most criteria (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+
 ## Concepts
 
 ### Criterion
