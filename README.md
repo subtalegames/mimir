@@ -14,13 +14,13 @@ At a high-level, Mímir is simply a Rust implementation of Elan's proposed syste
 
 ## High-level overview
 
-Your game's world is defined as a collection of "facts": the player killed `x` amount of enemies, `x` NPC has opened `y` amount of doors, the player is currently near `x` NPC, etc.
+Your game's world is defined as a collection of facts: the player killed x amount of enemies, an NPC has opened y amount of doors, the player is currently near z NPC, etc.
 
-In Mímir, facts are collected together into a map, where the map's key is the unique identifier/name of the fact, and the map's value is the fact's value (represented as a `f64`). This map of facts is known as a `Query`.
+In Mímir, facts are collected together into a map ([`Query`](#query)), where the key is the unique identifier of the fact, and the value is the fact's value (represented as a `f64`).
 
-Your game also has predefined `Rule`s that define behaviour that should occur when one or more facts are true. We represent rules as a map, where the map's key is the unique identifier/name of the fact, and the map's value is a criterion (see below) that acts as a predicate on the fact's value.
+Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`](#rule)), where the key is the unique identifier of the fact, and the value is a predicate ([`Criterion`](#criterion)) that acts on the fact's value.
 
-Finally, rules can be stored together in collections known as `Ruleset`s. Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most criteria (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+Finally, rules can be stored together in collections known as rulesets ([`Ruleset<T>`](#ruleset)). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most criteria (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
 ## Concepts
 
@@ -63,7 +63,7 @@ In the real-world, a criterion represents a condition that must be true for a co
 
 ### Query
 
-A query is a collection of "facts" about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
+A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
 struct Query {
@@ -71,7 +71,7 @@ struct Query {
 };
 ```
 
-### Rules
+### Rule
 
 A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`T`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
@@ -100,15 +100,51 @@ In the above example, the rule evaluates to true for the supplied query because 
 
 > *Our generic outcome type (`T`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).*
 
-### Rulesets
+### Ruleset
 
-Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule>`).
+Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule<T>>`).
 
 ```rs
 struct Ruleset<T> {
   rules: Vec<Rule<T>>,
 };
 ```
+
+#### Evaluating against queries
+
+Just like rules, rulesets can be evaluated against queries to determine if they are true given the current game world's state:
+
+```rs
+let mut rule = Rule::new("You killed 5 enemies!");
+rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
+
+let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
+more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
+more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
+
+let rule_set = Ruleset::from(vec![rule, more_specific_rule]);
+
+let mut query = Query::new();
+query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+
+assert_eq!(
+    rule_set.evaluate_all(&query)[0].outcome,
+    "You killed 5 enemies!"
+);
+
+let mut more_specific_query = Query::new();
+more_specific_query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+more_specific_query.fact("doors_opened".into(), 10.);
+
+assert_eq!(
+    rule_set.evaluate_all(&more_specific_query)[0].outcome,
+    "You killed 5 enemies and opened 2 doors!"
+);
+```
+
+In the above example, we define a ruleset with two rules. Both rules require that 5 enemies have been killed, but one rule is more specific (also requiring that more than 2 doors have been opened).
+
+The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains less criteria).
 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [py-range]: https://docs.python.org/3/library/functions.html#func-range
