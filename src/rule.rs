@@ -70,7 +70,7 @@ impl<T> Ruleset<T> {
         self.rules.reverse();
     }
 
-    pub fn from(mut rules: Vec<Rule<T>>) -> Self {
+    pub fn from(rules: Vec<Rule<T>>) -> Self {
         let mut new = Self {
             rules,
         };
