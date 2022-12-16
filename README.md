@@ -66,22 +66,22 @@ Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crat
 
 ### Query
 
-A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<String, f64>`, where the `String` is the unique name of the fact, and the `f64` is the fact's value.
+A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<FactKey, f64>`, where the `FactKey` generic type indicates the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
-struct Query {
-    facts: BTreeMap<String, f64>,
+struct Query<FactKey> {
+    facts: BTreeMap<FactKey, f64>,
 }
 ```
 
 ### Rule
 
-A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`T`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`Outcome`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule<T> {
-    criteria: BTreeMap<String, Criterion>,
-    pub outcome: T,
+struct Rule<FactKey, Outcome> {
+    criteria: BTreeMap<FactKey, Criterion>,
+    pub outcome: Outcome,
 }
 ```
 
@@ -91,25 +91,25 @@ Rules can be evaluated against queries to determine if they are true given the c
 
 ```rs
 let mut rule = Rule::new(true);
-rule.require("enemies_killed".into(), Criterion::eq(5.));
+rule.require("enemies_killed", Criterion::eq(5.));
 
 let mut query = Query::new();
-query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+query.fact("enemies_killed", 2.5 + 1.5 + 1.);
 
 assert!(rule.evaluate(&query));
 ```
 
 In the above example, the rule evaluates to true for the supplied query because it's expecting 5 enemies to be killed (`enemies_killed`), and the query confirms the fact that 5 (`2.5 + 1.5 + 1`) have been killed.
 
-> *Our generic outcome type (`T`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).*
+> *Our generic outcome type (`Outcome`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).*
 
 ### Ruleset
 
-Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule<T>>`).
+Rulesets are simply collections of rules (represented in Mímir as `Vec<Rule<FactKey, Outcome>>`).
 
 ```rs
-struct Ruleset<T> {
-    rules: Vec<Rule<T>>,
+struct Ruleset<FactKey, Outcome> {
+    rules: Vec<Rule<FactKey, Outcome>>,
 }
 ```
 
@@ -119,16 +119,16 @@ Just like rules, rulesets can be evaluated against queries to determine if they 
 
 ```rs
 let mut rule = Rule::new("You killed 5 enemies!");
-rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
+rule.require("enemies_killed", Criterion::EqualTo(5.));
 
 let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-more_specific_rule.require("enemies_killed".into(), Criterion::EqualTo(5.));
-more_specific_rule.require("doors_opened".into(), Criterion::gt(2.));
+more_specific_rule.require("enemies_killed", Criterion::EqualTo(5.));
+more_specific_rule.require("doors_opened", Criterion::gt(2.));
 
 let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
 let mut query = Query::new();
-query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
+query.fact("enemies_killed", 2.5 + 1.5 + 1.);
 
 assert_eq!(
     ruleset.evaluate_all(&query)[0].outcome,
@@ -136,8 +136,8 @@ assert_eq!(
 );
 
 let mut more_specific_query = Query::new();
-more_specific_query.fact("enemies_killed".into(), 2.5 + 1.5 + 1.);
-more_specific_query.fact("doors_opened".into(), 10.);
+more_specific_query.fact("enemies_killed", 2.5 + 1.5 + 1.);
+more_specific_query.fact("doors_opened", 10.);
 
 assert_eq!(
     ruleset.evaluate_all(&more_specific_query)[0].outcome,

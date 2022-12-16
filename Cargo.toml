@@ -1,6 +1,6 @@
 [package]
 name = "mimir"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 authors = ["Luke Carr <luke@subtale.com>"]
 description = "Contextual query engine for dynamic video games"
