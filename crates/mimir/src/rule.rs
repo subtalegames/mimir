@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::collections::HashMap;
 
 use rand::seq::SliceRandom;
 #[cfg(feature = "serde")]
@@ -13,13 +13,13 @@ use crate::criterion::Criterion;
     serde(crate = "serde_crate")
 )]
 pub struct Query<FactKey> {
-    facts: BTreeMap<FactKey, f64>,
+    facts: HashMap<FactKey, f64>,
 }
 
-impl<FactKey: std::cmp::Ord> Query<FactKey> {
+impl<FactKey: std::hash::Hash + std::cmp::Eq> Query<FactKey> {
     pub fn new() -> Self {
         Self {
-            facts: BTreeMap::new(),
+            facts: HashMap::new(),
         }
     }
 
@@ -27,8 +27,8 @@ impl<FactKey: std::cmp::Ord> Query<FactKey> {
         self.facts.insert(fact, value);
     }
 
-    pub fn append(&mut self, query: &mut Query<FactKey>) {
-        self.facts.append(&mut query.facts);
+    pub fn append(&mut self, query: Query<FactKey>) {
+        self.facts.extend(query.facts);
     }
 }
 
@@ -38,14 +38,14 @@ impl<FactKey: std::cmp::Ord> Query<FactKey> {
     serde(crate = "serde_crate")
 )]
 pub struct Rule<FactKey, Outcome> {
-    criteria: BTreeMap<FactKey, Criterion>,
+    criteria: HashMap<FactKey, Criterion>,
     pub outcome: Outcome,
 }
 
-impl<FactKey: std::cmp::Ord, Outcome> Rule<FactKey, Outcome> {
+impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Rule<FactKey, Outcome> {
     pub fn new(outcome: Outcome) -> Self {
         Self {
-            criteria: BTreeMap::new(),
+            criteria: HashMap::new(),
             outcome,
         }
     }
@@ -78,7 +78,7 @@ pub struct Ruleset<FactKey, Outcome> {
     rules: Vec<Rule<FactKey, Outcome>>,
 }
 
-impl<FactKey: std::cmp::Ord, Outcome> Ruleset<FactKey, Outcome> {
+impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome> {
     fn sort(&mut self) {
         self.rules.sort_by_cached_key(|x| x.criteria.len());
         self.rules.reverse();

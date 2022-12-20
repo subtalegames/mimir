@@ -66,11 +66,11 @@ Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crat
 
 ### Query
 
-A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `BTreeMap<FactKey, f64>`, where the `FactKey` generic type indicates the unique name of the fact, and the `f64` is the fact's value.
+A query is a collection of facts about the current game world's state. Mímir represents these facts in Rust as a `HashMap<FactKey, f64>`, where the `FactKey` generic type indicates the unique name of the fact, and the `f64` is the fact's value.
 
 ```rs
 struct Query<FactKey> {
-    facts: BTreeMap<FactKey, f64>,
+    facts: HashMap<FactKey, f64>,
 }
 ```
 
@@ -80,7 +80,7 @@ A `Rule` is a collection of criteria stored in a map (using symbols as keys) wit
 
 ```rs
 struct Rule<FactKey, Outcome> {
-    criteria: BTreeMap<FactKey, Criterion>,
+    criteria: HashMap<FactKey, Criterion>,
     pub outcome: Outcome,
 }
 ```
