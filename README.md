@@ -16,45 +16,45 @@ Your game's world is defined as a collection of facts: the player killed x amoun
 
 In Mímir, facts are collected together into a map ([`Query`](#query)), where the key is the unique identifier of the fact, and the value is the fact's value (represented as a `f64`).
 
-Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`](#rule)), where the key is the unique identifier of the fact, and the value is a predicate ([`Criterion`](#criterion)) that acts on the fact's value.
+Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`](#rule)), where the key is the unique identifier of the fact, and the value is a predicate ([`Requirement`](#requirement)) that is evaluated against the fact's value.
 
-Finally, rules can be stored together in collections known as rulesets ([`Ruleset<T>`](#ruleset)). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most criteria (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+Finally, rules can be stored together in collections known as rulesets ([`Ruleset<T>`](#ruleset)). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
 ## Concepts
 
-### Criterion
+### Requirement
 
-A `Criterion` is simply a definition of a predicate on a double precision floating-point number (represented in Mímir using Rust's `f64` type).
+A `Requirement` is simply a definition of a predicate on a double precision floating-point number (represented in Mímir using Rust's `f64` type).
 
 ```rs
-enum Criterion {
+enum Requirement {
     EqualTo(f64),
     NotEqualTo(f64),
-    LessThan(CriterionBound),
-    GreaterThan(CriterionBound),
-    InRange(CriterionBound, CriterionBound),
+    LessThan(RangeBound),
+    GreaterThan(RangeBound),
+    InRange(RangeBound, RangeBound),
 }
 ```
 
-> *`CriterionBound` is an enum that holds a boundary value that can be inclusive (`CriterionBound::Inclusive(f64)`) or exclusive (`CriterionBound::Exclusive(f64)`).*
+> *`RangeBound` is an enum that holds a boundary value that can be inclusive (`RangeBound::Inclusive(f64)`) or exclusive (`RangeBound::Exclusive(f64)`).*
 
 #### Helper functions
 
-Several helper functions are exposed to easily instantiate criteria with common equality expressions:
+Several helper functions are exposed to easily instantiate requirements with common equality expressions:
 
 | Function             | Internal     | Equivalent to |
 | :------------------: | :----------: | :-----------: |
-| `Criterion::lt(5.)`  | `Criterion::LessThan(CriterionBound::Exclusive(5.))` | `x < 5`       |
-| `Criterion::lte(5.)` | `Criterion::LessThan(CriterionBound::Inclusive(5.))` | `x ≤ 5`       |
-| `Criterion::gt(5.)`  | `Criterion::GreaterThan(CriterionBound::Exclusive(5.))`  | `x > 5`       |
-| `Criterion::gte(5.)` | `Criterion::GreaterThan(CriterionBound::Inclusive(5.))`  | `x ≥ 5`       |
-| `Criterion::range(5., 10.)`* | `Criterion::InRange(CriterionBound::Inclusive(5.), CriterionBound::Exclusive(10.))` | `5 ≤ x < 10` |
+| `Requirement::lt(5.)`  | `Requirement::LessThan(RangeBound::Exclusive(5.))` | `x < 5`       |
+| `Requirement::lte(5.)` | `Requirement::LessThan(RangeBound::Inclusive(5.))` | `x ≤ 5`       |
+| `Requirement::gt(5.)`  | `Requirement::GreaterThan(RangeBound::Exclusive(5.))`  | `x > 5`       |
+| `Requirement::gte(5.)` | `Requirement::GreaterThan(RangeBound::Inclusive(5.))`  | `x ≥ 5`       |
+| `Requirement::range(5., 10.)`* | `Requirement::InRange(RangeBound::Inclusive(5.), RangeBound::Exclusive(10.))` | `5 ≤ x < 10` |
 
-*: `Criterion::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
+*: `Requirement::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
 
 #### Real-world
 
-In the real-world, a criterion represents a condition that must be true for a contextual event to take place. However, events will typically have many criteria that need to evaluate to true, not just one!
+In the real-world, a requirement represents a condition that must be true for a contextual event to take place. However, events will typically have many requirements that need to evaluate to true, not just one!
 
 > For example, an NPC might query Mímir to ensure that they're only commenting on another NPC's behaviour if they've not exhibited the same behaviour previously (to avoid being hypocritical).
 >
@@ -62,7 +62,7 @@ In the real-world, a criterion represents a condition that must be true for a co
 
 #### Floating-point equality comparison
 
-Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crate to perform approximate comparisons between criterion and fact values when `Criterion::EqualTo` (and `Criterion::NotEqualTo`) is used.
+Internally, Mímir uses the [float-cmp](https://crates.io/crates/float-cmp) crate to perform approximate comparisons between requirements and fact values when `Requirement::EqualTo` (and `Requirement::NotEqualTo`) is used.
 
 ### Query
 
@@ -76,11 +76,11 @@ struct Query<FactKey> {
 
 ### Rule
 
-A `Rule` is a collection of criteria stored in a map (using symbols as keys) with a specific outcome (`Outcome`). Every criterion in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of facts and their requirements stored in a map, along with a specific outcome (`Outcome`). All requirements in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
 struct Rule<FactKey, Outcome> {
-    criteria: HashMap<FactKey, Criterion>,
+    requirements: HashMap<FactKey, Requirement>,
     pub outcome: Outcome,
 }
 ```
@@ -91,7 +91,7 @@ Rules can be evaluated against queries to determine if they are true given the c
 
 ```rs
 let mut rule = Rule::new(true);
-rule.require("enemies_killed", Criterion::eq(5.));
+rule.require("enemies_killed", Requirement::eq(5.));
 
 let mut query = Query::new();
 query.fact("enemies_killed", 2.5 + 1.5 + 1.);
@@ -119,11 +119,11 @@ Just like rules, rulesets can be evaluated against queries to determine if they 
 
 ```rs
 let mut rule = Rule::new("You killed 5 enemies!");
-rule.require("enemies_killed", Criterion::EqualTo(5.));
+rule.require("enemies_killed", Requirement::EqualTo(5.));
 
 let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-more_specific_rule.require("enemies_killed", Criterion::EqualTo(5.));
-more_specific_rule.require("doors_opened", Criterion::gt(2.));
+more_specific_rule.require("enemies_killed", Requirement::EqualTo(5.));
+more_specific_rule.require("doors_opened", Requirement::gt(2.));
 
 let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
@@ -147,11 +147,11 @@ assert_eq!(
 
 In the above example, we define a ruleset with two rules. Both rules require that 5 enemies have been killed, but one rule is more specific (also requiring that more than 2 doors have been opened).
 
-The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains less criteria).
+The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains less requirements).
 
 ## Serialization
 
-Criteria (including bounds), rules, and rulesets are all (de)serializable using [serde](https://serde.rs/) if you enable the respective feature in your project's `Cargo.toml`:
+Requirements (including bounds), rules, and rulesets are all (de)serializable using [serde](https://serde.rs/) if you enable the respective feature in your project's `Cargo.toml`:
 
 ```toml
 [dependencies]
@@ -168,7 +168,7 @@ This makes it easy for you to serialize rulesets into a persistent medium (i.e. 
 
 ### Ruleset storage
 
-Because Mímir evaluates rulesets by returning the most specific rule for a given query, the rules are stored in descending order of criteria length. This avoids scanning the entire ruleset for matching rules, as the first rules in the underlying collection are the most specific.
+Because Mímir evaluates rulesets by returning the most specific rule for a given query, the rules are stored in descending order of requirement count. This avoids scanning the entire ruleset for matching rules, as the first rules in the underlying collection are the most specific.
 
 However, this does mean that care should be taken when invoking `ruleset.append(...)` to introduce more rules into a ruleset, as this function also triggers the underlying collection to be sorted again after the new rules are appended. *(Ideally, the rulesets should be manipulated during your game's loading state, and then only evaluated during your game's main loop.)*
 

@@ -1,2 +1,2 @@
-pub mod criterion;
+pub mod requirement;
 pub mod rule;

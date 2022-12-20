@@ -4,7 +4,7 @@ use rand::seq::SliceRandom;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-use crate::criterion::Criterion;
+use crate::requirement::Requirement;
 
 #[derive(Default)]
 #[cfg_attr(
@@ -38,26 +38,26 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq> Query<FactKey> {
     serde(crate = "serde_crate")
 )]
 pub struct Rule<FactKey, Outcome> {
-    criteria: HashMap<FactKey, Criterion>,
+    requirements: HashMap<FactKey, Requirement>,
     pub outcome: Outcome,
 }
 
 impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Rule<FactKey, Outcome> {
     pub fn new(outcome: Outcome) -> Self {
         Self {
-            criteria: HashMap::new(),
+            requirements: HashMap::new(),
             outcome,
         }
     }
 
-    pub fn require(&mut self, fact: FactKey, criterion: Criterion) {
-        self.criteria.insert(fact, criterion);
+    pub fn require(&mut self, fact: FactKey, requirement: Requirement) {
+        self.requirements.insert(fact, requirement);
     }
 
     pub fn evaluate(&self, query: &Query<FactKey>) -> bool {
-        for (fact, criterion) in &self.criteria {
+        for (fact, requirement) in &self.requirements {
             if let Some(fact_value) = query.facts.get(fact) {
-                if !criterion.evaluate(*fact_value) {
+                if !requirement.evaluate(*fact_value) {
                     return false;
                 }
             } else {
@@ -80,7 +80,7 @@ pub struct Ruleset<FactKey, Outcome> {
 
 impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome> {
     fn sort(&mut self) {
-        self.rules.sort_by_cached_key(|x| x.criteria.len());
+        self.rules.sort_by_cached_key(|x| x.requirements.len());
         self.rules.reverse();
     }
 
@@ -99,7 +99,7 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome>
         let mut matched = Vec::<&Rule<FactKey, Outcome>>::new();
 
         for rule in self.rules.iter() {
-            if matched.get(0).map_or(0, |x| x.criteria.len()) <= rule.criteria.len() {
+            if matched.get(0).map_or(0, |x| x.requirements.len()) <= rule.requirements.len() {
                 if rule.evaluate(query) {
                     matched.push(rule);
                 }
@@ -124,7 +124,7 @@ mod tests {
     #[test]
     fn rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", Criterion::EqualTo(5.));
+        rule.require("enemies_killed", Requirement::EqualTo(5.));
 
         let mut query = Query::new();
         query.fact("enemies_killed", 2.5 + 1.5 + 1.);
@@ -135,8 +135,8 @@ mod tests {
     #[test]
     fn complex_rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        rule.require("enemies_killed", Criterion::EqualTo(5.));
-        rule.require("doors_opened", Criterion::gt(2.));
+        rule.require("enemies_killed", Requirement::EqualTo(5.));
+        rule.require("doors_opened", Requirement::gt(2.));
 
         let mut query = Query::new();
         query.fact("enemies_killed", 2.5 + 1.5 + 1.);
@@ -148,11 +148,11 @@ mod tests {
     #[test]
     fn ruleset_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", Criterion::EqualTo(5.));
+        rule.require("enemies_killed", Requirement::EqualTo(5.));
 
         let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        more_specific_rule.require("enemies_killed", Criterion::EqualTo(5.));
-        more_specific_rule.require("doors_opened", Criterion::gt(2.));
+        more_specific_rule.require("enemies_killed", Requirement::EqualTo(5.));
+        more_specific_rule.require("doors_opened", Requirement::gt(2.));
 
         let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 

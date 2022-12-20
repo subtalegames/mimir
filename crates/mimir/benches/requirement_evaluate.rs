@@ -1,10 +1,10 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-use mimir::criterion::CriterionBound;
+use mimir::requirement::{RangeBound, Requirement};
 
 fn benchmark(c: &mut Criterion) {
-    let criterion = black_box(mimir::criterion::Criterion::InRange(
-        CriterionBound::Exclusive(5.),
-        CriterionBound::Inclusive(25.),
+    let criterion = black_box(Requirement::InRange(
+        RangeBound::Exclusive(5.),
+        RangeBound::Inclusive(25.),
     ));
 
     c.bench_function("criterion evaluate", |b| {
