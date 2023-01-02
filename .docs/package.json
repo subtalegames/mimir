@@ -7,8 +7,8 @@
         "preview": "vitepress preview src"
     },
     "devDependencies": {
-        "vitepress": "1.0.0-alpha.34",
-        "vue": "^3.2.45"
+        "vitepress": "latest",
+        "vue": "latest"
     },
     "volta": {
         "node": "18.12.1"
