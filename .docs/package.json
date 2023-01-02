@@ -1,0 +1,17 @@
+{
+    "name": "mimir-docs",
+    "private": true,
+    "scripts": {
+        "dev": "vitepress dev src",
+        "build": "vitepress build src",
+        "preview": "vitepress preview src"
+    },
+    "devDependencies": {
+        "vitepress": "1.0.0-alpha.34",
+        "vue": "^3.2.45"
+    },
+    "volta": {
+        "node": "18.12.1"
+    },
+    "packageManager": "pnpm@7.21.0"
+}
