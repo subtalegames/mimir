@@ -13,5 +13,10 @@
     "volta": {
         "node": "18.12.1"
     },
-    "packageManager": "pnpm@7.21.0"
+    "packageManager": "pnpm@7.21.0",
+    "pnpm": {
+        "peerDependencyRules": {
+            "ignoreMissing": ["@algolia/client-search"]
+        }
+    }
 }
