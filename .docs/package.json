@@ -1,5 +1,5 @@
 {
-    "name": "docs",
+    "name": "mimir-docs",
     "private": true,
     "scripts": {
         "dev": "vitepress dev src",
