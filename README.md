@@ -4,6 +4,10 @@
 
 > Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by the current world's state.
 
+## Documentation
+
+Our official documentation at **[mimir.subtale.com][docs]** offers a guide with more detail than this README file, a full changelog, and example use cases for Mímir!
+
 ## Inspiration
 
 Mímir (both in concept and general architecture) is heavily inspired by [Elan Ruskin's amazing session from GDC 2012 on AI-driven Dynamic Dialog][gdc].
@@ -188,6 +192,7 @@ Quoting from [norse-mythology.org][mimir], Mímir is an exceptionally wise being
 
 *P.S. Acknowledging a happy coincidence, we love all of the work done by the folks over at [Santa Monica Studio][sms] (especially on 2018's reboot of God of War)!*
 
+[docs]: https://mimir.subtale.com
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [py-range]: https://docs.python.org/3/library/functions.html#func-range
 [mimir]: https://norse-mythology.org/gods-and-creatures/others/mimir/
