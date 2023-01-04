@@ -73,6 +73,16 @@ export default defineConfig({
                     },
                 ],
             },
+            {
+                text: 'Use cases',
+                collapsible: true,
+                items: [
+                    {
+                        text: 'Loading screen tips',
+                        link: '/use-cases/tips',
+                    },
+                ],
+            },
         ],
     },
 })
