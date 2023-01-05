@@ -1,10 +1,10 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, marker::PhantomData};
 
 use rand::seq::SliceRandom;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-use crate::requirement::Requirement;
+use crate::requirement::Evaluator;
 
 #[derive(Default)]
 #[cfg_attr(
@@ -12,22 +12,24 @@ use crate::requirement::Requirement;
     derive(Serialize, Deserialize),
     serde(crate = "serde_crate")
 )]
-pub struct Query<FactKey> {
-    facts: HashMap<FactKey, f64>,
+pub struct Query<FactKey, FactType> {
+    facts: HashMap<FactKey, FactType>,
 }
 
-impl<FactKey: std::hash::Hash + std::cmp::Eq> Query<FactKey> {
+impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
+    Query<FactKey, FactType>
+{
     pub fn new() -> Self {
         Self {
             facts: HashMap::new(),
         }
     }
 
-    pub fn fact(&mut self, fact: FactKey, value: f64) {
+    pub fn fact(&mut self, fact: FactKey, value: FactType) {
         self.facts.insert(fact, value);
     }
 
-    pub fn append(&mut self, query: Query<FactKey>) {
+    pub fn append(&mut self, query: Query<FactKey, FactType>) {
         self.facts.extend(query.facts);
     }
 }
@@ -37,14 +39,22 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq> Query<FactKey> {
     derive(Serialize, Deserialize),
     serde(crate = "serde_crate")
 )]
-pub struct Rule<FactKey, Outcome> {
+pub struct Rule<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
+    marker: PhantomData<FactType>,
     requirements: HashMap<FactKey, Requirement>,
     pub outcome: Outcome,
 }
 
-impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Rule<FactKey, Outcome> {
+impl<
+        FactKey: std::hash::Hash + std::cmp::Eq,
+        FactType: std::marker::Copy,
+        Requirement: Evaluator<FactType> + std::marker::Copy,
+        Outcome,
+    > Rule<FactKey, FactType, Requirement, Outcome>
+{
     pub fn new(outcome: Outcome) -> Self {
         Self {
+            marker: PhantomData,
             requirements: HashMap::new(),
             outcome,
         }
@@ -54,7 +64,7 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Rule<FactKey, Outcome> {
         self.requirements.insert(fact, requirement);
     }
 
-    pub fn evaluate(&self, query: &Query<FactKey>) -> bool {
+    pub fn evaluate(&self, query: &Query<FactKey, FactType>) -> bool {
         for (fact, requirement) in &self.requirements {
             if let Some(fact_value) = query.facts.get(fact) {
                 if !requirement.evaluate(*fact_value) {
@@ -74,29 +84,38 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Rule<FactKey, Outcome> {
     derive(Serialize, Deserialize),
     serde(crate = "serde_crate")
 )]
-pub struct Ruleset<FactKey, Outcome> {
-    rules: Vec<Rule<FactKey, Outcome>>,
+pub struct Ruleset<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
+    rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>,
 }
 
-impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome> {
+impl<
+        FactKey: std::hash::Hash + std::cmp::Eq,
+        FactType: std::marker::Copy,
+        Requirement: Evaluator<FactType> + std::marker::Copy,
+        Outcome,
+    > Ruleset<FactKey, FactType, Requirement, Outcome>
+{
     fn sort(&mut self) {
         self.rules.sort_by_cached_key(|x| x.requirements.len());
         self.rules.reverse();
     }
 
-    pub fn from(rules: Vec<Rule<FactKey, Outcome>>) -> Self {
+    pub fn from(rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>) -> Self {
         let mut new = Self { rules };
         new.sort();
         new
     }
 
-    pub fn append(&mut self, ruleset: &mut Ruleset<FactKey, Outcome>) {
+    pub fn append(&mut self, ruleset: &mut Ruleset<FactKey, FactType, Requirement, Outcome>) {
         self.rules.append(&mut ruleset.rules);
         self.sort();
     }
 
-    pub fn evaluate_all(&self, query: &Query<FactKey>) -> Vec<&Rule<FactKey, Outcome>> {
-        let mut matched = Vec::<&Rule<FactKey, Outcome>>::new();
+    pub fn evaluate_all(
+        &self,
+        query: &Query<FactKey, FactType>,
+    ) -> Vec<&Rule<FactKey, FactType, Requirement, Outcome>> {
+        let mut matched = Vec::<&Rule<FactKey, FactType, Requirement, Outcome>>::new();
 
         for rule in self.rules.iter() {
             if matched.get(0).map_or(0, |x| x.requirements.len()) <= rule.requirements.len() {
@@ -111,7 +130,10 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome>
         matched
     }
 
-    pub fn evaluate(&self, query: &Query<FactKey>) -> Option<&Rule<FactKey, Outcome>> {
+    pub fn evaluate(
+        &self,
+        query: &Query<FactKey, FactType>,
+    ) -> Option<&Rule<FactKey, FactType, Requirement, Outcome>> {
         let matched = self.evaluate_all(query);
         matched.choose(&mut rand::thread_rng()).copied()
     }
@@ -119,6 +141,8 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, Outcome> Ruleset<FactKey, Outcome>
 
 #[cfg(test)]
 mod tests {
+    use crate::requirement::Requirement;
+
     use super::*;
 
     #[test]

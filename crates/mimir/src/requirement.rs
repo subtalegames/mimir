@@ -27,8 +27,12 @@ pub enum Requirement {
     InRange(RangeBound, RangeBound),
 }
 
-impl Requirement {
-    pub fn evaluate(self, value: f64) -> bool {
+pub trait Evaluator<T = f64> {
+    fn evaluate(self, value: T) -> bool;
+}
+
+impl Evaluator<f64> for Requirement {
+    fn evaluate(self, value: f64) -> bool {
         match self {
             Self::EqualTo(x) => approx_eq!(f64, x, value),
             Self::NotEqualTo(x) => !approx_eq!(f64, x, value),
@@ -41,22 +45,16 @@ impl Requirement {
                 RangeBound::Inclusive(x) => value >= x,
             },
             Self::InRange(lower, upper) => match (lower, upper) {
-                (RangeBound::Exclusive(x), RangeBound::Exclusive(y)) => {
-                    value > x && value < y
-                }
-                (RangeBound::Exclusive(x), RangeBound::Inclusive(y)) => {
-                    value > x && value <= y
-                }
-                (RangeBound::Inclusive(x), RangeBound::Exclusive(y)) => {
-                    value >= x && value < y
-                }
-                (RangeBound::Inclusive(x), RangeBound::Inclusive(y)) => {
-                    value >= x && value <= y
-                }
+                (RangeBound::Exclusive(x), RangeBound::Exclusive(y)) => value > x && value < y,
+                (RangeBound::Exclusive(x), RangeBound::Inclusive(y)) => value > x && value <= y,
+                (RangeBound::Inclusive(x), RangeBound::Exclusive(y)) => value >= x && value < y,
+                (RangeBound::Inclusive(x), RangeBound::Inclusive(y)) => value >= x && value <= y,
             },
         }
     }
+}
 
+impl Requirement {
     pub fn lt(value: f64) -> Requirement {
         Self::LessThan(RangeBound::Exclusive(value))
     }
@@ -74,10 +72,7 @@ impl Requirement {
     }
 
     pub fn range(lower: f64, upper: f64) -> Requirement {
-        Self::InRange(
-            RangeBound::Inclusive(lower),
-            RangeBound::Exclusive(upper),
-        )
+        Self::InRange(RangeBound::Inclusive(lower), RangeBound::Exclusive(upper))
     }
 }
 
@@ -87,10 +82,8 @@ mod tests {
 
     #[test]
     fn in_range() {
-        let requirement = Requirement::InRange(
-            RangeBound::Exclusive(5.),
-            RangeBound::Inclusive(25.),
-        );
+        let requirement =
+            Requirement::InRange(RangeBound::Exclusive(5.), RangeBound::Inclusive(25.));
         assert!(requirement.evaluate(6.));
         assert!(requirement.evaluate(10.));
         assert!(!requirement.evaluate(5.));
@@ -189,10 +182,7 @@ mod tests {
         let requirement = Requirement::range(5., 25.);
         assert_eq!(
             requirement,
-            Requirement::InRange(
-                RangeBound::Inclusive(5.),
-                RangeBound::Exclusive(25.)
-            )
+            Requirement::InRange(RangeBound::Inclusive(5.), RangeBound::Exclusive(25.))
         );
     }
 }

@@ -20,13 +20,13 @@ enum Requirement {
 
 Several helper functions are exposed to easily instantiate requirements with common equality expressions:
 
-| Function             | Internal     | Equivalent to |
-| :------------------: | :----------: | :-----------: |
-| `Requirement::lt(5.)`  | `Requirement::LessThan(RangeBound::Exclusive(5.))` | `x < 5`       |
-| `Requirement::lte(5.)` | `Requirement::LessThan(RangeBound::Inclusive(5.))` | `x ≤ 5`       |
-| `Requirement::gt(5.)`  | `Requirement::GreaterThan(RangeBound::Exclusive(5.))`  | `x > 5`       |
-| `Requirement::gte(5.)` | `Requirement::GreaterThan(RangeBound::Inclusive(5.))`  | `x ≥ 5`       |
-| `Requirement::range(5., 10.)` | `Requirement::InRange(RangeBound::Inclusive(5.), RangeBound::Exclusive(10.))` | `5 ≤ x < 10` |
+|           Function            |                                   Internal                                    | Equivalent to |
+|:-----------------------------:|:-----------------------------------------------------------------------------:|:-------------:|
+|     `Requirement::lt(5.)`     |              `Requirement::LessThan(RangeBound::Exclusive(5.))`               |    `x < 5`    |
+|    `Requirement::lte(5.)`     |              `Requirement::LessThan(RangeBound::Inclusive(5.))`               |    `x ≤ 5`    |
+|     `Requirement::gt(5.)`     |             `Requirement::GreaterThan(RangeBound::Exclusive(5.))`             |    `x > 5`    |
+|    `Requirement::gte(5.)`     |             `Requirement::GreaterThan(RangeBound::Inclusive(5.))`             |    `x ≥ 5`    |
+| `Requirement::range(5., 10.)` | `Requirement::InRange(RangeBound::Inclusive(5.), RangeBound::Exclusive(10.))` | `5 ≤ x < 10`  |
 
 ::: info
 `Requirement::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
