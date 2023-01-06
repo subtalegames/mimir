@@ -46,10 +46,6 @@ export default defineConfig({
                         link: '/concepts/evaluator',
                     },
                     {
-                        text: 'Requirement',
-                        link: '/concepts/requirement',
-                    },
-                    {
                         text: 'Query',
                         link: '/concepts/query',
                     },
