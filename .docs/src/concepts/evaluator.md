@@ -45,6 +45,8 @@ enum FloatEvaluator {
 }
 ```
 
+If you're interested in how we've implemented the `Evaluator<f64>` trait for `FloatEvaluator`, check out the [source code on GitHub][float-src]!
+
 ::: info
 `FloatRangeBound` is an enum that holds a boundary value that can be inclusive (`FloatRangeBound::Inclusive(f64)`) or exclusive (`FloatRangeBound::Exclusive(f64)`).
 :::
@@ -69,5 +71,6 @@ Several helper functions are exposed to easily instantiate `FloatEvaluator` with
 
 Internally, Mímir's `FloatEvaluator` uses the [float-cmp][float-cmp] crate to perform approximate comparisons when `FloatEvaluator::EqualTo` or `FloatEvaluator::NotEqualTo` are evaluated.
 
+[float-src]: https://github.com/subtalegames/mimir/blob/main/crates/mimir/src/evaluator.rs#L37-L93
 [py-range]: https://docs.python.org/3/library/functions.html#func-range
 [float-cmp]: https://crates.io/crates/float-cmp
