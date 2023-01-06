@@ -38,7 +38,7 @@ In a production environment (i.e. distributing your game), it makes more sense t
 
 ### Adding requirements
 
-Without [evaluators](/concepts/evaluators) (requirements), these tips are pretty useless. Let's add some!
+Without [evaluators](/concepts/evaluator) (requirements), these tips are pretty useless. Let's add some!
 
 ::: info
 The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!

@@ -33,7 +33,7 @@ mimir = { version = "x.x.x", features = ["float"] }
 ```
 :::
 
-The `FloatEvaluator` is a built-in implementation of the `Evaluator<T>` trait, allowing you to define [requirements](/concepts/requirement) that match against floating-point numbers.
+The `FloatEvaluator` is a built-in implementation of the `Evaluator<T>` trait, allowing you to define evaluators that match against floating-point numbers.
 
 ```rs
 enum FloatEvaluator {

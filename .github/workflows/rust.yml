@@ -3,10 +3,10 @@ name: Rust
 on:
   push:
     branches: [ "main" ]
-    paths: [ "**.rs", "Cargo.toml" ]
+    paths: [ "**.rs", "Cargo.toml", ".github/workflows/rust.yml" ]
   pull_request:
     branches: [ "main" ]
-    paths: [ "**.rs", "Cargo.toml" ]
+    paths: [ "**.rs", "Cargo.toml", ".github/workflows/rust.yml" ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -32,6 +32,6 @@ jobs:
         key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
         restore-keys: ${{ runner.os }}-cargo-
     - name: Run tests
-      run: cargo test --verbose
+      run: cargo test --features=float --verbose
     - name: Run clippy
       run: cargo clippy -- -D warnings
