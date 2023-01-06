@@ -20,7 +20,7 @@ Your game's world is defined as a collection of facts: the player killed x amoun
 
 In Mímir, facts are collected together into a map ([`Query`][query]), where the key is the unique identifier of the fact, and the value is the fact's value (represented as a `f64`).
 
-Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Requirement`][requirement]) that is evaluated against the fact's value.
+Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
 
 Finally, rules can be stored together in collections known as rulesets ([`Ruleset<T>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
@@ -70,7 +70,7 @@ Quoting from [norse-mythology.org][mimir], Mímir is an exceptionally wise being
 [docs]: https://mimir.subtale.com
 [query]: https://mimir.subtale.com/concepts/query
 [rule]: https://mimir.subtale.com/concepts/rule
-[requirement]: https://mimir.subtale.com/concepts/requirement
+[evaluator]: https://mimir.subtale.com/concepts/evaluator
 [ruleset]: https://mimir.subtale.com/concepts/ruleset
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [mimir]: https://norse-mythology.org/gods-and-creatures/others/mimir/

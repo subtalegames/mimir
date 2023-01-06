@@ -3,8 +3,8 @@
 Rulesets are collections of rules, represented in Rust as `Vec<Rule<FactKey, Outcome>>`.
 
 ```rs
-struct Ruleset<FactKey, Outcome> {
-    rules: Vec<Rule<FactKey, Outcome>>,
+struct Ruleset<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
+    rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>,
 }
 ```
 
@@ -18,13 +18,13 @@ Just like rules, rulesets can be evaluated against queries to determine if they 
 
 ```rs
 let mut rule = Rule::new("You killed 5 enemies!");
-rule.require("enemies_killed", Requirement::EqualTo(5.));
+rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 
 let mut more_specific_rule = Rule::new(
     "You killed 5 enemies and opened 2 doors!"
 );
-more_specific_rule.require("enemies_killed", Requirement::EqualTo(5.));
-more_specific_rule.require("doors_opened", Requirement::gt(2.));
+more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
 
 let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
@@ -51,5 +51,5 @@ In the above example, we define a ruleset with two rules. Both rules require tha
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement.
 
 ::: info
-In the second query, although the simpler rule is satisfied, Mímir does not evaluate it as true because it's less specific (i.e. contains fewer requirements).
+In the second query, although the simpler rule is satisfied, Mímir does not evaluate it as true because it's less specific (i.e. contains fewer evaluators).
 :::

@@ -42,6 +42,10 @@ export default defineConfig({
                 collapsible: true,
                 items: [
                     {
+                        text: 'Evaluator',
+                        link: '/concepts/evaluator',
+                    },
+                    {
                         text: 'Requirement',
                         link: '/concepts/requirement',
                     },

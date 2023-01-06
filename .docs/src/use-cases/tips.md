@@ -38,19 +38,23 @@ In a production environment (i.e. distributing your game), it makes more sense t
 
 ### Adding requirements
 
-Without [requirements](/concepts/requirement), these tips are pretty useless. Let's add some!
+Without [evaluators](/concepts/evaluators) (requirements), these tips are pretty useless. Let's add some!
+
+::: info
+The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
+:::
 
 ```rs
-use mimir::requirement::Requirement;
+use mimir::evaluator::{Evaluator, FloatEvaluator};
 
 just_died.require(
     "player_just_died",
-    Requirement::EqualTo(1.),
+    FloatEvaluator::EqualTo(1.),
 );
 
 finished_level_three.require(
     "last_level_completed",
-    Requirement::EqualTo(3.),
+    FloatEvaluator::EqualTo(3.),
 );
 
 // Your game needs to maintain the values of `player_just_died` and
@@ -58,7 +62,9 @@ finished_level_three.require(
 ```
 
 ::: info
-In Mímir, requirements are predicates that always evaluate against floating-point numbers (Rust's `f64`). In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`Requirement::EqualTo(1.)`).
+In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
+
+Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
 :::
 
 ## Bundling the tips
@@ -94,7 +100,7 @@ let tip = tips.evaluate(&current_state);
 
 You may find that there are no valid tips based on what you've defined and your game's current state; this is completely normal behaviour!
 
-`Ruleset::evaluate` returns an `Option<Rule<FactKey, Outcome>>`: this means that you can use a match expression and perform some alternative logic if no matching tip is found (i.e. pick from a selection of predefined, generic tips).
+`Ruleset::evaluate` returns an `Option<Rule<...>`: this means that you can use a match expression and perform some alternative logic if no matching tip is found (i.e. pick from a selection of predefined, generic tips).
 
 ### Multiple valid tips
 
@@ -102,4 +108,4 @@ It's also a reasonable expectation that there will be times when your game's cur
 
 Out-of-the-box, Mímir will evaluate to a randomly chosen rule in a ruleset if multiple are evaluated as true.
 
-Alternatively, you can use `Ruleset::evaluate_all(&current_state)` to return a `Vec<Rule<FactKey, Outcome>>`: this means that you can iterate over all of the rules that Mímir evaluated as true (none, one, or many).
+Alternatively, you can use `Ruleset::evaluate_all(&current_state)` to return a `Vec<Rule<...>>`: this means that you can iterate over all of the rules that Mímir evaluated as true (none, one, or many).

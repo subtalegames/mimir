@@ -4,7 +4,7 @@ use rand::seq::SliceRandom;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-use crate::requirement::Evaluator;
+use crate::evaluator::Evaluator;
 
 #[derive(Default)]
 #[cfg_attr(
@@ -141,14 +141,14 @@ impl<
 
 #[cfg(test)]
 mod tests {
-    use crate::requirement::Requirement;
+    use crate::evaluator::FloatEvaluator;
 
     use super::*;
 
     #[test]
     fn rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", Requirement::EqualTo(5.));
+        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 
         let mut query = Query::new();
         query.fact("enemies_killed", 2.5 + 1.5 + 1.);
@@ -159,8 +159,8 @@ mod tests {
     #[test]
     fn complex_rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        rule.require("enemies_killed", Requirement::EqualTo(5.));
-        rule.require("doors_opened", Requirement::gt(2.));
+        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+        rule.require("doors_opened", FloatEvaluator::gt(2.));
 
         let mut query = Query::new();
         query.fact("enemies_killed", 2.5 + 1.5 + 1.);
@@ -172,11 +172,11 @@ mod tests {
     #[test]
     fn ruleset_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", Requirement::EqualTo(5.));
+        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 
         let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        more_specific_rule.require("enemies_killed", Requirement::EqualTo(5.));
-        more_specific_rule.require("doors_opened", Requirement::gt(2.));
+        more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+        more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
 
         let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 

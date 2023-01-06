@@ -1,6 +1,6 @@
 # Serialization
 
-Requirements (including bounds), rules, and rulesets are all (de)serializable using [serde][serde] if you enable the respective feature in your project's `Cargo.toml`:
+Evaluators (including the `FloatEvaluator` implementation), rules, and rulesets are all (de)serializable using [serde][serde] if you enable the respective feature in your project's `Cargo.toml`:
 
 ```toml
 [dependencies]

@@ -1,9 +1,10 @@
 # Rule
 
-A `Rule` is a collection of facts and their requirements stored in a map, along with a specific outcome (`Outcome`). All requirements in the rule must evaluate to true for the rule itself to be considered true.
+A `Rule` is a collection of facts and their evaluators (requirements) stored in a map, along with a specific outcome (`Outcome`). All evaluators in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule<FactKey, Outcome> {
+struct Rule<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
+    marker: PhantomData<FactType>,
     requirements: HashMap<FactKey, Requirement>,
     pub outcome: Outcome,
 }
@@ -15,7 +16,7 @@ Rules can be evaluated against queries to determine if they are true given the c
 
 ```rs
 let mut rule = Rule::new(true);
-rule.require("enemies_killed", Requirement::eq(5.));
+rule.require("enemies_killed", FloatEvaluator::eq(5.));
 
 let mut query = Query::new();
 query.fact("enemies_killed", 2.5 + 1.5 + 1.);
