@@ -49,10 +49,18 @@ impl Evaluator<f64> for FloatEvaluator {
                 FloatRangeBound::Inclusive(x) => value >= x,
             },
             Self::InRange(lower, upper) => match (lower, upper) {
-                (FloatRangeBound::Exclusive(x), FloatRangeBound::Exclusive(y)) => value > x && value < y,
-                (FloatRangeBound::Exclusive(x), FloatRangeBound::Inclusive(y)) => value > x && value <= y,
-                (FloatRangeBound::Inclusive(x), FloatRangeBound::Exclusive(y)) => value >= x && value < y,
-                (FloatRangeBound::Inclusive(x), FloatRangeBound::Inclusive(y)) => value >= x && value <= y,
+                (FloatRangeBound::Exclusive(x), FloatRangeBound::Exclusive(y)) => {
+                    value > x && value < y
+                }
+                (FloatRangeBound::Exclusive(x), FloatRangeBound::Inclusive(y)) => {
+                    value > x && value <= y
+                }
+                (FloatRangeBound::Inclusive(x), FloatRangeBound::Exclusive(y)) => {
+                    value >= x && value < y
+                }
+                (FloatRangeBound::Inclusive(x), FloatRangeBound::Inclusive(y)) => {
+                    value >= x && value <= y
+                }
             },
         }
     }
@@ -77,7 +85,10 @@ impl FloatEvaluator {
     }
 
     pub fn range(lower: f64, upper: f64) -> FloatEvaluator {
-        Self::InRange(FloatRangeBound::Inclusive(lower), FloatRangeBound::Exclusive(upper))
+        Self::InRange(
+            FloatRangeBound::Inclusive(lower),
+            FloatRangeBound::Exclusive(upper),
+        )
     }
 }
 
@@ -89,8 +100,10 @@ mod tests {
     #[cfg(feature = "float")]
     #[test]
     fn in_range() {
-        let evaluator =
-            FloatEvaluator::InRange(FloatRangeBound::Exclusive(5.), FloatRangeBound::Inclusive(25.));
+        let evaluator = FloatEvaluator::InRange(
+            FloatRangeBound::Exclusive(5.),
+            FloatRangeBound::Inclusive(25.),
+        );
         assert!(evaluator.evaluate(6.));
         assert!(evaluator.evaluate(10.));
         assert!(!evaluator.evaluate(5.));
@@ -159,7 +172,7 @@ mod tests {
     fn lt_helper() {
         let evaluator = FloatEvaluator::lt(5.);
         assert_eq!(
-                evaluator,
+            evaluator,
             FloatEvaluator::LessThan(FloatRangeBound::Exclusive(5.))
         );
     }
@@ -169,7 +182,7 @@ mod tests {
     fn lte_helper() {
         let evaluator = FloatEvaluator::lte(5.);
         assert_eq!(
-                evaluator,
+            evaluator,
             FloatEvaluator::LessThan(FloatRangeBound::Inclusive(5.))
         );
     }
@@ -179,7 +192,7 @@ mod tests {
     fn gt_helper() {
         let evaluator = FloatEvaluator::gt(5.);
         assert_eq!(
-                evaluator,
+            evaluator,
             FloatEvaluator::GreaterThan(FloatRangeBound::Exclusive(5.))
         );
     }
@@ -189,7 +202,7 @@ mod tests {
     fn gte_helper() {
         let evaluator = FloatEvaluator::gte(5.);
         assert_eq!(
-                evaluator,
+            evaluator,
             FloatEvaluator::GreaterThan(FloatRangeBound::Inclusive(5.))
         );
     }
@@ -199,8 +212,11 @@ mod tests {
     fn range_helper() {
         let evaluator = FloatEvaluator::range(5., 25.);
         assert_eq!(
-                evaluator,
-            FloatEvaluator::InRange(FloatRangeBound::Inclusive(5.), FloatRangeBound::Exclusive(25.))
+            evaluator,
+            FloatEvaluator::InRange(
+                FloatRangeBound::Inclusive(5.),
+                FloatRangeBound::Exclusive(25.)
+            )
         );
     }
 }

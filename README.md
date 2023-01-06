@@ -28,11 +28,11 @@ Finally, rules can be stored together in collections known as rulesets ([`Rulese
 
 ```rs
 let mut rule = Rule::new("You killed 5 enemies!");
-rule.require("enemies_killed", Requirement::EqualTo(5.));
+rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 
 let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-more_specific_rule.require("enemies_killed", Requirement::EqualTo(5.));
-more_specific_rule.require("doors_opened", Requirement::gt(2.));
+more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
 
 let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
