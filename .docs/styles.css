@@ -9,3 +9,14 @@
     75% { transform: translate(-5px, 0) rotate(-5deg); }
     100% { transform: translate(0, -3px) rotate(0deg); }
 }
+
+span.shake:not(:hover) {
+    animation: shake 0.6s infinite;
+}
+
+@media (prefers-reduced-motion) {
+    span.shake:not(:hover) {
+        animation: none;
+        padding: 0;
+    }
+}
