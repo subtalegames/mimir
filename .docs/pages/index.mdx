@@ -22,7 +22,7 @@ let mut query = Query::new();
 query.fact("enemies_killed", 2.5 + 1.5 + 1.);
 
 assert_eq!(
-    ruleset.evaluate_all(&query)[0].outcome,
+    ruleset.evaluate(&query).unwrap().outcome,
     "You killed 5 enemies!"
 );
 
@@ -32,7 +32,7 @@ more_specific_query.fact("enemies_killed", 2.5 + 1.5 + 1.);
 more_specific_query.fact("doors_opened", 10.);
 
 assert_eq!(
-    ruleset.evaluate_all(&more_specific_query)[0].outcome,
+    ruleset.evaluate(&more_specific_query).unwrap().outcome,
     "You killed 5 enemies and opened 2 doors!"
 );
 ```
