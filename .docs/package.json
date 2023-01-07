@@ -2,21 +2,19 @@
     "name": "mimir-docs",
     "private": true,
     "scripts": {
-        "dev": "vitepress dev src",
-        "build": "vitepress build src",
-        "preview": "vitepress preview src"
+        "dev": "next"
     },
-    "devDependencies": {
-        "vitepress": "latest",
-        "vue": "latest"
+    "dependencies": {
+        "@types/node": "18.11.18",
+        "typescript": "4.9.4",
+        "next": "^13.1.1",
+        "nextra": "^2.0.3",
+        "nextra-theme-docs": "^2.0.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     },
     "volta": {
         "node": "18.12.1"
     },
-    "packageManager": "pnpm@7.21.0",
-    "pnpm": {
-        "peerDependencyRules": {
-            "ignoreMissing": ["@algolia/client-search"]
-        }
-    }
+    "packageManager": "pnpm@7.21.0"
 }

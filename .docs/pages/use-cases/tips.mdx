@@ -1,3 +1,5 @@
+import { Callout } from 'nextra-theme-docs'
+
 # Loading screen tips
 
 For as long as most gamers can remember, video games have offered tips and hints on loading screens (and various other game states inbetween gameplay, e.g. lobbies).
@@ -32,17 +34,17 @@ let mut finished_level_three = Rule::new(Outcome::Tip {
 });
 ```
 
-::: tip
+<Callout type="info">
 In a production environment (i.e. distributing your game), it makes more sense to serialize your tips during development and include them in your distributed assets, ready to be [serialized at runtime](/guide/serialization)!
-:::
+</Callout>
 
 ### Adding requirements
 
 Without [evaluators](/concepts/evaluator) (requirements), these tips are pretty useless. Let's add some!
 
-::: info
+<Callout type="warning">
 The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
-:::
+</Callout>
 
 ```rs
 use mimir::evaluator::{Evaluator, FloatEvaluator};
@@ -61,11 +63,11 @@ finished_level_three.require(
 // `last_level_completed`: this logic is outside of Mímir's scope!
 ```
 
-::: info
+<Callout type="info">
 In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
 
 Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
-:::
+</Callout>
 
 ## Bundling the tips
 
@@ -77,11 +79,11 @@ use mimir::rule::Ruleset;
 let tips = Ruleset::from(vec![just_died, finished_level_three]);
 ```
 
-::: warning
-As outlined on the [performance page](/guide/performance#ruleset-storage), invoking `Ruleset::from` is expensive!
+<Callout type="warning">
+As outlined on the [performance page](/performance#ruleset-storage), invoking `Ruleset::from` is expensive!
 
 Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
-:::
+</Callout>
 
 ## Retrieving a valid tip
 

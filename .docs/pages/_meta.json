@@ -1,0 +1,24 @@
+{
+    "introduction": "Introduction",
+    "concepts": "Concepts",
+    "use-cases": "Use cases",
+    "performance": "Performance",
+    "serialization": "Serialization",
+    "changelog": {
+        "title": "Changelog",
+        "theme": {
+            "sidebar": true,
+            "breadcrumb": false,
+            "pagination": false
+        }
+    },
+    "index": {
+        "title": "Home",
+        "type": "page"
+    },
+    "docs": {
+        "title": "Docs",
+        "type": "page",
+        "href": "/introduction/inspiration"
+    }
+}
