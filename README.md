@@ -32,7 +32,7 @@ rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 
 let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
 more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
-more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
+more_specific_rule.require("doors_opened", FloatEvaluator::gte(2.));
 
 let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
 
