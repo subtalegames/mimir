@@ -14,7 +14,10 @@
     },
     "index": {
         "title": "Home",
-        "type": "page"
+        "type": "page",
+        "theme": {
+            "timestamp": false
+        }
     },
     "docs": {
         "title": "Docs",
