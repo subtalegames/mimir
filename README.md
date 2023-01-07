@@ -39,7 +39,7 @@ more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
 more_specific_rule.require("doors_opened", FloatEvaluator::gte(2.));
 
 // bundle the rules into a ruleset
-let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
+let ruleset = Ruleset::new(vec![rule, more_specific_rule]);
 
 // run a query against the ruleset
 let mut query = Query::new();

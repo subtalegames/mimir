@@ -76,11 +76,11 @@ Now let's bundle the tips into a [ruleset](/concepts/ruleset) so we can evaluate
 ```rs
 use mimir::rule::Ruleset;
 
-let tips = Ruleset::from(vec![just_died, finished_level_three]);
+let tips = Ruleset::new(vec![just_died, finished_level_three]);
 ```
 
 <Callout type="warning">
-As outlined on the [performance page](/performance#ruleset-storage), invoking `Ruleset::from` is expensive!
+    As outlined on the [performance page](/performance#ruleset-storage), invoking `Ruleset::new` is expensive!
 
 Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
 </Callout>

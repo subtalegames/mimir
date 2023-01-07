@@ -100,7 +100,7 @@ impl<
         self.rules.reverse();
     }
 
-    pub fn from(rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>) -> Self {
+    pub fn new(rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>) -> Self {
         let mut new = Self { rules };
         new.sort();
         new
@@ -178,7 +178,7 @@ mod tests {
         more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
         more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
 
-        let ruleset = Ruleset::from(vec![rule, more_specific_rule]);
+        let ruleset = Ruleset::new(vec![rule, more_specific_rule]);
 
         let mut query = Query::new();
         query.fact("enemies_killed", 2.5 + 1.5 + 1.);

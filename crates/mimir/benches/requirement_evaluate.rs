@@ -4,14 +4,14 @@ use mimir::evaluator::{Evaluator, FloatEvaluator, FloatRangeBound};
 
 #[cfg(feature = "float")]
 fn benchmark(c: &mut Criterion) {
-    let criterion = black_box(FloatEvaluator::InRange(
+    let evaluator = black_box(FloatEvaluator::InRange(
         FloatRangeBound::Exclusive(5.),
         FloatRangeBound::Inclusive(25.),
     ));
 
     c.bench_function("criterion evaluate", |b| {
         b.iter(|| {
-            criterion.evaluate(black_box(15.));
+            evaluator.evaluate(black_box(15.));
         })
     });
 }
