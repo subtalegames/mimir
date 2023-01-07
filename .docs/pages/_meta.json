@@ -1,13 +1,28 @@
 {
     "introduction": "Introduction",
+    "tutorial": {
+        "title": "Tutorial",
+        "theme": {
+            "breadcrumb": false
+        }
+    },
     "concepts": "Concepts",
     "use-cases": "Use cases",
-    "performance": "Performance",
-    "serialization": "Serialization",
+    "performance": {
+        "title": "Performance",
+        "theme": {
+            "breadcrumb": false
+        }
+    },
+    "serialization": {
+        "title": "Serialization",
+        "theme": {
+            "breadcrumb": false
+        }
+    },
     "changelog": {
         "title": "Changelog",
         "theme": {
-            "sidebar": true,
             "breadcrumb": false,
             "pagination": false
         }
@@ -23,6 +38,11 @@
         "title": "Docs",
         "type": "page",
         "href": "/introduction/inspiration"
+    },
+    "tutorial-link": {
+        "title": "Tutorial",
+        "type": "page",
+        "href": "/tutorial"
     },
     "changelog-menu-link": {
         "title": "Changelog",
