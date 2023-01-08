@@ -100,7 +100,7 @@ span.shake:not(:hover) {
     margin: 0;
 }
 
-.shadow button[title="Copy code"] {
+.shadow button {
     display: none;
 }
 
