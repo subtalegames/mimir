@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "Docs",
+            "workingDir": ".docs",
+            "program": "pnpm",
+            "args": ["dev"]
+        }
+    ]
+}
