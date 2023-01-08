@@ -1,7 +1,9 @@
-import {useRouter} from "next/router";
+import { useRouter } from 'next/router'
+import Footer from 'components/Footer'
+import Logo from 'components/Logo'
 
 export default {
-    logo: <span className="font-black text-lg flex items-center">Mímir <span className="ml-4 font-bold px-3 py-1 text-sm rounded bg-gradient-to-tr from-indigo-800 to-indigo-600 text-white">Subtale OSS</span></span>,
+    logo: <Logo />,
     project: {
         link: 'https://github.com/subtalegames/mimir',
     },
@@ -19,8 +21,6 @@ export default {
         }
     },
     footer: {
-        text: <span>
-            Copyright © {new Date().getFullYear()} Subtale. Mímir is dual-licensed under MIT and Apache-2.0.
-        </span>
-    }
+        text: <Footer />,
+    },
 }
