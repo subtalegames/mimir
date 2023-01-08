@@ -12,11 +12,13 @@ export default {
         const { route } = useRouter()
         if (route !== '/') {
             return {
-                titleTemplate: '%s – Mímir'
+                titleTemplate: '%s – Mímir',
+                description: 'Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world\'s state.',
             }
         } else {
             return {
                 titleTemplate: 'Mímir - Contextual query engine for dynamic video games',
+                description: 'Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world\'s state.',
             }
         }
     },
