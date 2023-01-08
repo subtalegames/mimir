@@ -6,6 +6,16 @@
             "workingDir": ".docs",
             "program": "pnpm",
             "args": ["dev"]
+        },
+        {
+            "type": "cargo",
+            "name": "Test",
+            "cargoArgs": ["test", "--features=float"],
+        },
+        {
+            "type": "cargo",
+            "name": "Benchmark",
+            "cargoArgs": ["bench", "--features=float"]
         }
     ]
 }
