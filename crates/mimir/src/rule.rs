@@ -25,11 +25,11 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
         }
     }
 
-    pub fn fact(&mut self, fact: FactKey, value: FactType) {
+    pub fn insert(&mut self, fact: FactKey, value: FactType) {
         self.facts.insert(fact, value);
     }
 
-    pub fn append(&mut self, query: Query<FactKey, FactType>) {
+    pub fn extend(&mut self, query: Query<FactKey, FactType>) {
         self.facts.extend(query.facts);
     }
 }
@@ -39,35 +39,35 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
     derive(Serialize, Deserialize),
     serde(crate = "serde_crate")
 )]
-pub struct Rule<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
+pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
     marker: PhantomData<FactType>,
-    requirements: HashMap<FactKey, Requirement>,
+    evaluators: HashMap<FactKey, FactEvaluator>,
     pub outcome: Outcome,
 }
 
 impl<
         FactKey: std::hash::Hash + std::cmp::Eq,
         FactType: std::marker::Copy,
-        Requirement: Evaluator<FactType> + std::marker::Copy,
+        FactEvaluator: Evaluator<FactType> + std::marker::Copy,
         Outcome,
-    > Rule<FactKey, FactType, Requirement, Outcome>
+    > Rule<FactKey, FactType, FactEvaluator, Outcome>
 {
     pub fn new(outcome: Outcome) -> Self {
         Self {
             marker: PhantomData,
-            requirements: HashMap::new(),
+            evaluators: HashMap::new(),
             outcome,
         }
     }
 
-    pub fn require(&mut self, fact: FactKey, requirement: Requirement) {
-        self.requirements.insert(fact, requirement);
+    pub fn insert(&mut self, fact: FactKey, evaluator: FactEvaluator) {
+        self.evaluators.insert(fact, evaluator);
     }
 
     pub fn evaluate(&self, query: &Query<FactKey, FactType>) -> bool {
-        for (fact, requirement) in &self.requirements {
+        for (fact, evaluator) in &self.evaluators {
             if let Some(fact_value) = query.facts.get(fact) {
-                if !requirement.evaluate(*fact_value) {
+                if !evaluator.evaluate(*fact_value) {
                     return false;
                 }
             } else {
@@ -84,29 +84,29 @@ impl<
     derive(Serialize, Deserialize),
     serde(crate = "serde_crate")
 )]
-pub struct Ruleset<FactKey, FactType, Requirement: Evaluator<FactType>, Outcome> {
-    rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>,
+pub struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
+    rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>,
 }
 
 impl<
         FactKey: std::hash::Hash + std::cmp::Eq,
         FactType: std::marker::Copy,
-        Requirement: Evaluator<FactType> + std::marker::Copy,
+        FactEvaluator: Evaluator<FactType> + std::marker::Copy,
         Outcome,
-    > Ruleset<FactKey, FactType, Requirement, Outcome>
+    > Ruleset<FactKey, FactType, FactEvaluator, Outcome>
 {
     fn sort(&mut self) {
-        self.rules.sort_by_cached_key(|x| x.requirements.len());
+        self.rules.sort_by_cached_key(|x| x.evaluators.len());
         self.rules.reverse();
     }
 
-    pub fn new(rules: Vec<Rule<FactKey, FactType, Requirement, Outcome>>) -> Self {
+    pub fn new(rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>) -> Self {
         let mut new = Self { rules };
         new.sort();
         new
     }
 
-    pub fn append(&mut self, ruleset: &mut Ruleset<FactKey, FactType, Requirement, Outcome>) {
+    pub fn append(&mut self, ruleset: &mut Ruleset<FactKey, FactType, FactEvaluator, Outcome>) {
         self.rules.append(&mut ruleset.rules);
         self.sort();
     }
@@ -114,11 +114,11 @@ impl<
     pub fn evaluate_all(
         &self,
         query: &Query<FactKey, FactType>,
-    ) -> Vec<&Rule<FactKey, FactType, Requirement, Outcome>> {
-        let mut matched = Vec::<&Rule<FactKey, FactType, Requirement, Outcome>>::new();
+        ) -> Vec<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
+        let mut matched = Vec::<&Rule<FactKey, FactType, FactEvaluator, Outcome>>::new();
 
         for rule in self.rules.iter() {
-            if matched.get(0).map_or(0, |x| x.requirements.len()) <= rule.requirements.len() {
+            if matched.get(0).map_or(0, |x| x.evaluators.len()) <= rule.evaluators.len() {
                 if rule.evaluate(query) {
                     matched.push(rule);
                 }
@@ -133,7 +133,7 @@ impl<
     pub fn evaluate(
         &self,
         query: &Query<FactKey, FactType>,
-    ) -> Option<&Rule<FactKey, FactType, Requirement, Outcome>> {
+        ) -> Option<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
         let matched = self.evaluate_all(query);
         matched.choose(&mut rand::thread_rng()).copied()
     }
@@ -148,10 +148,10 @@ mod tests {
     #[test]
     fn rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+        rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
 
         let mut query = Query::new();
-        query.fact("enemies_killed", 2.5 + 1.5 + 1.);
+        query.insert("enemies_killed", 2.5 + 1.5 + 1.);
 
         assert!(rule.evaluate(&query));
     }
@@ -159,12 +159,12 @@ mod tests {
     #[test]
     fn complex_rule_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
-        rule.require("doors_opened", FloatEvaluator::gt(2.));
+        rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
+        rule.insert("doors_opened", FloatEvaluator::gt(2.));
 
         let mut query = Query::new();
-        query.fact("enemies_killed", 2.5 + 1.5 + 1.);
-        query.fact("doors_opened", 10.);
+        query.insert("enemies_killed", 2.5 + 1.5 + 1.);
+        query.insert("doors_opened", 10.);
 
         assert!(rule.evaluate(&query));
     }
@@ -172,28 +172,28 @@ mod tests {
     #[test]
     fn ruleset_evaluation() {
         let mut rule = Rule::new("You killed 5 enemies!");
-        rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
+        rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
 
         let mut more_specific_rule = Rule::new("You killed 5 enemies and opened 2 doors!");
-        more_specific_rule.require("enemies_killed", FloatEvaluator::EqualTo(5.));
-        more_specific_rule.require("doors_opened", FloatEvaluator::gt(2.));
+        more_specific_rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
+        more_specific_rule.insert("doors_opened", FloatEvaluator::gt(2.));
 
         let ruleset = Ruleset::new(vec![rule, more_specific_rule]);
 
         let mut query = Query::new();
-        query.fact("enemies_killed", 2.5 + 1.5 + 1.);
+        query.insert("enemies_killed", 2.5 + 1.5 + 1.);
 
         assert_eq!(
-            ruleset.evaluate_all(&query)[0].outcome,
+            ruleset.evaluate(&query).unwrap().outcome,
             "You killed 5 enemies!"
         );
 
         let mut more_specific_query = Query::new();
-        more_specific_query.fact("enemies_killed", 2.5 + 1.5 + 1.);
-        more_specific_query.fact("doors_opened", 10.);
+        more_specific_query.insert("enemies_killed", 2.5 + 1.5 + 1.);
+        more_specific_query.insert("doors_opened", 10.);
 
         assert_eq!(
-            ruleset.evaluate_all(&more_specific_query)[0].outcome,
+            ruleset.evaluate(&more_specific_query).unwrap().outcome,
             "You killed 5 enemies and opened 2 doors!"
         );
     }

@@ -6,13 +6,13 @@ Evaluators (including the `FloatEvaluator` implementation), rules, and rulesets 
 
 ```toml
 [dependencies]
-mimir = { version = "x.x.x", features = ["serde"] }
+mimir = { version = "0.4.0", features = ["serde"] }
 ```
 
 This makes it easy for you to serialize rulesets into a persistent medium (i.e. files) during your game's development process, bundle them with your game, and deserialize them at runtime.
 
 <Callout type="info">
-This also means that Mímir can effortlessly support modding by allowing you to deserialize and load user-defined rulesets at runtime.
+    This also means that Mímir can effortlessly support modding by allowing you to deserialize and load user-defined rulesets at runtime.
 </Callout>
 
 [serde]: https://serde.rs/
