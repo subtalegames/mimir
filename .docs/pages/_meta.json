@@ -39,7 +39,12 @@
         "type": "page",
         "href": "/introduction/inspiration"
     },
-    "tutorial-link": {
+    "docs-rs-menu-link": {
+        "title": "API Reference",
+        "type": "page",
+        "href": "https://docs.rs/subtale-mimir"
+    },
+    "tutorial-menu-link": {
         "title": "Tutorial",
         "type": "page",
         "href": "/tutorial"
