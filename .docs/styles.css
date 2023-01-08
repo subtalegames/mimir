@@ -29,9 +29,11 @@ span.shake:not(:hover) {
     border-color: rgb(229 231 235/1);
     margin-bottom: 3rem;
 }
+
 .steps-container h3 {
     counter-increment: step;
 }
+
 .steps-container h3:before {
     content: counter(step);
     display: inline-block;
@@ -58,4 +60,77 @@ span.shake:not(:hover) {
     color: #999;
     border: 4px solid rgba(17, 17, 17, var(--tw-bg-opacity));
     background: #2e2e2e;
+}
+
+:root {
+    --gradient-shadow: linear-gradient(
+            45deg,
+		#fb0094,
+		#0000ff,
+		#00ff00,
+		#ffff00,
+		#ff0000,
+		#fb0094,
+		#0000ff,
+		#00ff00,
+		#ffff00,
+		#ff0000
+	);
+}
+
+.shadow {
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+    position: relative;
+    border-radius: 8px;
+    background: white;
+}
+
+.dark .shadow {
+    background: black;
+}
+
+.shadow div {
+    width: 100%;
+    height: 100%;
+}
+
+.shadow pre {
+    margin: 0;
+}
+
+.shadow button[title="Copy code"] {
+    display: none;
+}
+
+.shadow:before,
+.shadow:after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    background: var(--gradient-shadow);
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: animate 20s linear infinite;
+    border-radius: 8px;
+}
+
+.shadow:after {
+    filter: blur(20px);
+}
+
+@keyframes animate {
+    0% {
+        background-position: 0 0;
+    }
+	50% {
+        background-position: 300% 0;
+    }
+	100% {
+        background-position: 0 0;
+    }
 }
