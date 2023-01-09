@@ -7,6 +7,6 @@ function Subtale() {
 
 export default function Logo() {
     return <span className="font-black text-lg flex items-center">
-        Mímir <Subtale />
+        🧠 Mímir <Subtale />
     </span>
 }

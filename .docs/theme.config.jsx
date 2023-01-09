@@ -25,4 +25,5 @@ export default {
     footer: {
         text: <Footer />,
     },
+    faviconGlyph: '🧠',
 }
