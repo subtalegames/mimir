@@ -68,6 +68,15 @@ In the above example, we define a ruleset with two rules. Both rules require tha
 
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains fewer requirements).
 
+## Libraries used
+
+Without the following libraries, Mímir would not be where it is now:
+
+* [float-cmp][float-cmp]: used to approximate floating-point number comparisons
+* [rand][rand]: used to randomly selected evaluated rules when multiple are evaluated as true
+* [serde][serde]: used to offer methods of (de)serialization
+* [criterion][criterion]: used to write benchmarking test suites
+
 ## Why Mímir?
 
 Internally at Subtale, we've adopted a naming convention around Norse mythology for tools, packages, and working titles for games.
@@ -80,6 +89,16 @@ We hope that this contextual query engine lives up to its name in being just as 
 
 *P.S. Acknowledging a happy coincidence in the naming of Mímir, we love all of the work done by the folks over at [Santa Monica Studio][sms] (especially on 2018's reboot of God of War)!*
 
+## License
+
+Mímir is free and open source. Unless explicitly noted otherwise, all code in this repository is dual-licensed under the [MIT License][mit] and [Apache License, Version 2.0][apache].
+
+This licensing approach is the de facto standard within the Rust ecosystem.
+
+### Contributions
+
+Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
+
 [gh-workflow]: https://github.com/subtalegames/mimir/actions/workflows/rust.yml
 [docs]: https://mimir.subtale.com
 [query]: https://mimir.subtale.com/concepts/query
@@ -91,3 +110,7 @@ We hope that this contextual query engine lives up to its name in being just as 
 [sms]: https://sms.playstation.com
 [mit]: LICENSE-MIT
 [apache]: LICENSE-APACHE
+[float-cmp]: https://github.com/mikedilger/float-cmp
+[rand]: https://github.com/rust-random/rand
+[serde]: https://github.com/serde-rs/serde
+[criterion]: https://github.com/bheisler/criterion.rs
