@@ -119,6 +119,13 @@ span.shake:not(:hover) {
     border-radius: 8px;
 }
 
+@media (prefers-reduced-motion) {
+    .shadow:before,
+    .shadow:after {
+        animation: none;
+    }
+}
+
 .shadow:after {
     filter: blur(20px);
 }
