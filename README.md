@@ -2,6 +2,8 @@
 
 [![Rust](https://github.com/subtalegames/mimir/actions/workflows/rust.yml/badge.svg)][gh-workflow]
 [![Docs](https://img.shields.io/badge/docs-passing-brightgreen)][docs]
+[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen)][mit]
+[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen)][apache]
 
 > Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
@@ -87,3 +89,5 @@ We hope that this contextual query engine lives up to its name in being just as 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
 [mimir]: https://norse-mythology.org/gods-and-creatures/others/mimir/
 [sms]: https://sms.playstation.com
+[mit]: LICENSE-MIT
+[apache]: LICENSE-APACHE
