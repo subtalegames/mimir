@@ -1,5 +1,5 @@
 [package]
-name = "mimir"
+name = "subtale-mimir"
 version = "0.3.0"
 edition = "2021"
 authors = ["Luke Carr <luke@subtale.com>"]
