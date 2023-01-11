@@ -25,7 +25,7 @@ features = ["derive"]
 criterion = "0.4.0"
 
 [[bench]]
-name = "requirement_evaluate"
+name = "float_evaluator"
 harness = false
 
 [features]
