@@ -1,4 +1,4 @@
-> Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
+> Mímir is a contextual query engine for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
 ## Documentation
 
