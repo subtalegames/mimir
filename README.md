@@ -30,7 +30,7 @@ Finally, rules can be stored together in collections known as rulesets ([`Rulese
 ## Example
 
 ```rs
-use mimir::{evaluator::{Evaluator, FloatEvaluator}, rule::{Query, Rule, Ruleset}};
+use subtale_mimir::{evaluator::{Evaluator, FloatEvaluator}, rule::{Query, Rule, Ruleset}};
 
 // create a rule requiring that five enemies have been killed
 let mut rule = Rule::new("You killed 5 enemies!");

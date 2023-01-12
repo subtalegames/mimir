@@ -21,7 +21,7 @@ enum Outcome {
 Now let's define some tips (represented as [rules](/concepts/rule) in Mímir):
 
 ```rs
-use mimir::rule::Rule;
+use subtale_mimir::rule::Rule;
 
 let mut just_died = Rule::new(Outcome::Tip {
     message: "Have you tried, like, not dying?".into(),
@@ -47,7 +47,7 @@ Without [evaluators](/concepts/evaluator) (requirements), these tips are pretty 
 </Callout>
 
 ```rs
-use mimir::evaluator::{Evaluator, FloatEvaluator};
+use subtale_mimir::evaluator::{Evaluator, FloatEvaluator};
 
 just_died.insert(
     "player_just_died",
@@ -74,7 +74,7 @@ finished_level_three.insert(
 Now let's bundle the tips into a [ruleset](/concepts/ruleset) so we can evaluate them all against our game's current state in a performant manner:
 
 ```rs
-use mimir::rule::Ruleset;
+use subtale_mimir::rule::Ruleset;
 
 let tips = Ruleset::new(vec![just_died, finished_level_three]);
 ```
