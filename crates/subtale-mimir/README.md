@@ -2,7 +2,11 @@
 
 ## Documentation
 
-Our official documentation at **[mimir.subtale.com][docs]** offers a guide with more detail than this README file, a full changelog, and example use cases for Mímir!
+Our official documentation at **[mimir.subtale.com][docs]** offers significantly more detail than this README, including:
+
+* [a tutorial for newcomers][tutorial]
+* [a full changelog][changelog]
+* [example use cases][use-cases]
 
 ## Inspiration
 
@@ -62,6 +66,9 @@ In the above example, we define a ruleset with two rules. Both rules require tha
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains fewer requirements).
 
 [docs]: https://mimir.subtale.com
+[tutorial]: https://mimir.subtale.com/tutorial
+[changelog]: https://mimir.subtale.com/changelog
+[use-cases]: https://mimir.subtale.com/use-cases/tips
 [query]: https://mimir.subtale.com/concepts/query
 [rule]: https://mimir.subtale.com/concepts/rule
 [evaluator]: https://mimir.subtale.com/concepts/evaluator

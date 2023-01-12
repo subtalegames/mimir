@@ -9,7 +9,11 @@
 
 ## Documentation
 
-Our official documentation at **[mimir.subtale.com][docs]** offers a guide with more detail than this README file, a full changelog, and example use cases for Mímir!
+Our official documentation at **[mimir.subtale.com][docs]** offers significantly more detail than this README, including:
+
+* [a tutorial for newcomers][tutorial]
+* [a full changelog][changelog]
+* [example use cases][use-cases]
 
 ## Inspiration
 
@@ -101,6 +105,9 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 
 [gh-workflow]: https://github.com/subtalegames/mimir/actions/workflows/rust.yml
 [docs]: https://mimir.subtale.com
+[tutorial]: https://mimir.subtale.com/tutorial
+[changelog]: https://mimir.subtale.com/changelog
+[use-cases]: https://mimir.subtale.com/use-cases/tips
 [query]: https://mimir.subtale.com/concepts/query
 [rule]: https://mimir.subtale.com/concepts/rule
 [evaluator]: https://mimir.subtale.com/concepts/evaluator
