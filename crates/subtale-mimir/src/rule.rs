@@ -114,7 +114,7 @@ impl<
     pub fn evaluate_all(
         &self,
         query: &Query<FactKey, FactType>,
-        ) -> Vec<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
+    ) -> Vec<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
         let mut matched = Vec::<&Rule<FactKey, FactType, FactEvaluator, Outcome>>::new();
 
         for rule in self.rules.iter() {
@@ -133,7 +133,7 @@ impl<
     pub fn evaluate(
         &self,
         query: &Query<FactKey, FactType>,
-        ) -> Option<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
+    ) -> Option<&Rule<FactKey, FactType, FactEvaluator, Outcome>> {
         let matched = self.evaluate_all(query);
         matched.choose(&mut rand::thread_rng()).copied()
     }
@@ -141,9 +141,8 @@ impl<
 
 #[cfg(test)]
 mod tests {
-    use crate::evaluator::FloatEvaluator;
-
     use super::*;
+    use crate::evaluator::FloatEvaluator;
 
     #[test]
     fn rule_evaluation() {
