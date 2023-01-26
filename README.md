@@ -77,6 +77,7 @@ The first query evaluates to the simpler rule, because the query does not satisf
 Without the following libraries, Mímir would not be where it is now:
 
 * [float-cmp][float-cmp]: used to approximate floating-point number comparisons
+* [indexmap][indexmap]: used as the implementation of underlying map structures
 * [rand][rand]: used to randomly selected evaluated rules when multiple are evaluated as true
 * [serde][serde]: used to offer methods of (de)serialization
 * [criterion][criterion]: used to write benchmarking test suites
@@ -118,6 +119,7 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 [mit]: LICENSE-MIT
 [apache]: LICENSE-APACHE
 [float-cmp]: https://github.com/mikedilger/float-cmp
+[indexmap]: https://github.com/bluss/indexmap
 [rand]: https://github.com/rust-random/rand
 [serde]: https://github.com/serde-rs/serde
 [criterion]: https://github.com/bheisler/criterion.rs
