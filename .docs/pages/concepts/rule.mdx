@@ -31,3 +31,13 @@ In the above example, the rule evaluates to true for the supplied query because 
 <Callout type="info">
 Our generic outcome type (`Outcome`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).
 </Callout>
+
+## Insertion order
+
+Mímir stored rule facts and evaluators inside an [`IndexMap`][indexmap] which preserves the insertion order of evaluators.
+
+This distinction is important because it allows you to extract more performance when evaluating rules by ensuring that your "namespace" facts are inserted into the rule first.
+
+For example, imagine a scenario where you're using Mímir to handle character dialog. By establishing a fact that identifies who's speaking (e.g. `"speaker"`), and having the evaluator for the speaker at the beginning of each rule, you can improve performance substantially (because the rule will stop iterating over its remaining evaluators if it finds one that evaluates to false).
+
+[indexmap]: https://github.com/bluss/indexmap
