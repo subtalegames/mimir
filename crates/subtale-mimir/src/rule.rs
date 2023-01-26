@@ -65,6 +65,15 @@ impl<
     }
 
     pub fn evaluate(&self, query: &Query<FactKey, FactType>) -> bool {
+        // HashMap::len() has a time complexity of O(1), so we check this
+        // against the query's length to avoid unnecessary iteration
+        if self.evaluators.len() > query.facts.len() {
+            return false;
+        }
+
+        // Iterate over all evaluators. If any evaluator is not found
+        // in the query or evaluates to false, break out of the loop
+        // and return false
         for (fact, evaluator) in &self.evaluators {
             if let Some(fact_value) = query.facts.get(fact) {
                 if !evaluator.evaluate(*fact_value) {
@@ -75,6 +84,8 @@ impl<
             }
         }
 
+        // All evaluators were found in the query, and all evaluated
+        // to true, so the rule is true for the provided query
         true
     }
 }
