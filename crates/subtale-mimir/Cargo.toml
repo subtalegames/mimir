@@ -12,6 +12,7 @@ readme = "README.md"
 
 [dependencies]
 float-cmp = { version = "0.9.0", optional = true }
+indexmap = "1.9.2"
 rand = "0.8.5"
 
 [dependencies.serde_crate]
@@ -29,5 +30,5 @@ name = "float_evaluator"
 harness = false
 
 [features]
-serde = ["serde_crate"]
+serde = ["serde_crate", "indexmap/serde"]
 float = ["dep:float-cmp"]

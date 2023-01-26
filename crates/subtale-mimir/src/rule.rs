@@ -1,5 +1,6 @@
-use std::{collections::HashMap, marker::PhantomData};
+use std::marker::PhantomData;
 
+use indexmap::IndexMap;
 use rand::seq::SliceRandom;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -13,7 +14,7 @@ use crate::evaluator::Evaluator;
     serde(crate = "serde_crate")
 )]
 pub struct Query<FactKey, FactType> {
-    facts: HashMap<FactKey, FactType>,
+    facts: IndexMap<FactKey, FactType>,
 }
 
 impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
@@ -21,7 +22,7 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
 {
     pub fn new() -> Self {
         Self {
-            facts: HashMap::new(),
+            facts: IndexMap::new(),
         }
     }
 
@@ -41,7 +42,7 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
 )]
 pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
     marker: PhantomData<FactType>,
-    evaluators: HashMap<FactKey, FactEvaluator>,
+    evaluators: IndexMap<FactKey, FactEvaluator>,
     pub outcome: Outcome,
 }
 
@@ -55,7 +56,7 @@ impl<
     pub fn new(outcome: Outcome) -> Self {
         Self {
             marker: PhantomData,
-            evaluators: HashMap::new(),
+            evaluators: IndexMap::new(),
             outcome,
         }
     }
@@ -65,7 +66,7 @@ impl<
     }
 
     pub fn evaluate(&self, query: &Query<FactKey, FactType>) -> bool {
-        // HashMap::len() has a time complexity of O(1), so we check this
+        // IndexMap::len() has a time complexity of O(1), so we check this
         // against the query's length to avoid unnecessary iteration
         if self.evaluators.len() > query.facts.len() {
             return false;

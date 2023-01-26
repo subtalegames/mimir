@@ -7,7 +7,7 @@ A `Rule` is a collection of facts and their evaluators (requirements) stored in 
 ```rs
 struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
     marker: PhantomData<FactType>,
-    evaluators: HashMap<FactKey, FactEvaluator>,
+    evaluators: IndexMap<FactKey, FactEvaluator>,
     pub outcome: Outcome,
 }
 ```
