@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.dark .subtale {
+    background: rgba(17,17,17,var(--tw-bg-opacity));
+}
+
 @keyframes shake {
     0% { transform: translate(0, -3px) rotate(0deg); }
     25% { transform: translate(5px, 0) rotate(5deg); }
