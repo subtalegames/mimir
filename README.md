@@ -4,6 +4,7 @@
 [![Docs](https://img.shields.io/badge/docs-passing-brightgreen)][docs]
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen)][mit]
 [![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen)][apache]
+![FOSSA scan](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir.svg?type=shield)
 
 > Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
