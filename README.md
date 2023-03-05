@@ -1,6 +1,7 @@
 # Mímir
 
-[![Rust](https://github.com/subtalegames/mimir/actions/workflows/rust.yml/badge.svg)][gh-workflow]
+[![Rust](https://github.com/subtalegames/mimir/actions/workflows/rust.yml/badge.svg)][![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir?ref=badge_shield)
+[gh-workflow]
 [![Docs](https://img.shields.io/badge/docs-passing-brightgreen)][docs]
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen)][mit]
 [![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen)][apache]
@@ -99,6 +100,9 @@ We hope that this contextual query engine lives up to its name in being just as 
 Mímir is free and open source. Unless explicitly noted otherwise, all code in this repository is dual-licensed under the [MIT License][mit] and [Apache License, Version 2.0][apache].
 
 This licensing approach is the de facto standard within the Rust ecosystem.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir?ref=badge_large)
 
 ### Contributions
 
