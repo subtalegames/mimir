@@ -11,7 +11,7 @@ specifiers:
   react-dom: ^18.2.0
   react-youtube: ^10.1.0
   tailwindcss: ^3.2.4
-  typescript: ^4.9.4
+  typescript: ^5.0.0
 
 dependencies:
   '@types/node': 18.11.18
@@ -24,7 +24,7 @@ dependencies:
   react-dom: 18.2.0_react@18.2.0
   react-youtube: 10.1.0_react@18.2.0
   tailwindcss: 3.2.4_postcss@8.4.21
-  typescript: 4.9.4
+  typescript: 5.0.2
 
 packages:
 
@@ -2501,9 +2501,9 @@ packages:
     engines: {node: '>=10'}
     dev: false
 
-  /typescript/4.9.4:
-    resolution: {integrity: sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==}
-    engines: {node: '>=4.2.0'}
+  /typescript/5.0.2:
+    resolution: {integrity: sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==}
+    engines: {node: '>=12.20'}
     hasBin: true
     dev: false
 
