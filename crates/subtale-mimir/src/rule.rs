@@ -25,6 +25,12 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
         }
     }
 
+    pub fn with_capacity(capacity: usize) -> Self {
+        Self {
+            facts: IndexMap::with_capacity(capacity),
+        }
+    }
+
     pub fn insert(&mut self, fact: FactKey, value: FactType) {
         self.facts.insert(fact, value);
     }
