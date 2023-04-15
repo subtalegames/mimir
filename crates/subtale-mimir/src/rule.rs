@@ -8,12 +8,11 @@ use serde::{Deserialize, Serialize};
 use crate::evaluator::Evaluator;
 
 #[derive(Default)]
-#[cfg_attr(
-    feature = "serde",
-    derive(Serialize, Deserialize),
-    serde(crate = "serde_crate")
-)]
-pub struct Query<FactKey, FactType> {
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct Query<FactKey, FactType>
+where
+    FactKey: std::hash::Hash + std::cmp::Eq,
+{
     facts: IndexMap<FactKey, FactType>,
 }
 
@@ -35,12 +34,11 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
     }
 }
 
-#[cfg_attr(
-    feature = "serde",
-    derive(Serialize, Deserialize),
-    serde(crate = "serde_crate")
-)]
-pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
+where
+    FactKey: std::hash::Hash + std::cmp::Eq,
+{
     marker: PhantomData<FactType>,
     evaluators: IndexMap<FactKey, FactEvaluator>,
     pub outcome: Outcome,
@@ -91,12 +89,11 @@ impl<
     }
 }
 
-#[cfg_attr(
-    feature = "serde",
-    derive(Serialize, Deserialize),
-    serde(crate = "serde_crate")
-)]
-pub struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
+#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+pub struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
+where
+    FactKey: std::hash::Hash + std::cmp::Eq,
+{
     rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>,
 }
 
@@ -152,9 +149,11 @@ impl<
 }
 
 #[cfg(test)]
+#[cfg(feature = "float")]
 mod tests {
     use super::*;
-    use crate::evaluator::FloatEvaluator;
+
+    use crate::float::FloatEvaluator;
 
     #[test]
     fn rule_evaluation() {

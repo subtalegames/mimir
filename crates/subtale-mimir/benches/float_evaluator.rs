@@ -1,6 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
-#[cfg(feature = "float")]
-use subtale_mimir::evaluator::{Evaluator, FloatEvaluator, FloatRangeBound};
+use subtale_mimir::prelude::*;
 
 #[cfg(feature = "float")]
 fn benchmark(c: &mut Criterion) {
