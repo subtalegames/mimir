@@ -2,5 +2,12 @@
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [
         "config:base"
-    ]
+    ],
+    "labels": [
+        "type: renovate"
+    ],
+    "commitMessagePrefix": "⬆️",
+    "commitMessageAction": "Upgraded",
+    "commitMessageTopic": "`{{depName}}`",
+    "commitMessageExtra": "to `{{#if isPinDigest}}{{{newDigestShort}}}{{else}}{{#if isMajor}}{{prettyNewMajor}}{{else}}{{#if isSingleVersion}}{{prettyNewVersion}}{{else}}{{#if newValue}}{{{newValue}}}{{else}}{{{newDigestShort}}}{{/if}}{{/if}}{{/if}}{{/if}}`"
 }
