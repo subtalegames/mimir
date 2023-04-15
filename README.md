@@ -26,11 +26,11 @@ Fundamentally speaking, Mímir is simply a Rust implementation of Elan's propose
 
 Your game's world is defined as a collection of facts: the player killed x amount of enemies, an NPC has opened y amount of doors, the player is currently near z NPC, etc.
 
-In Mímir, facts are collected together into a map ([`Query<FactKey, FactValue>`][query]), where the key is the unique identifier of the fact, and the value is the fact's value.
+In Mímir, facts are collected together into a map ([`Query<FactKey, FactType>`][query]), where the key is the unique identifier of the fact, and the value is the fact's value.
 
-Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<FactKey, FactValue, FactEvaluator, Outcome>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
+Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<FactKey, FactType, FactEvaluator, Outcome>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
 
-Finally, rules can be stored together in collections known as rulesets ([`Ruleset<FactKey, FactValue, FactEvaluator, Outcome>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+Finally, rules can be stored together in collections known as rulesets ([`Ruleset<FactKey, FactType, FactEvaluator, Outcome>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
 ## Example
 

@@ -5,22 +5,37 @@ use serde::{Deserialize, Serialize};
 
 use super::evaluator::Evaluator;
 
+/// Represents a bound of a range used during float comparisons made by `FloatEvaluator`.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[cfg(feature = "float")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum FloatRangeBound {
+    /// A bound that's exclusive of the contained value.
     Exclusive(f64),
+    /// A bound that's exclusive of the contained value.
     Inclusive(f64),
 }
 
+/// A reference implementation of the `Evaluator` trait that allows for comparisons against
+/// facts with a value type of `f64`.
 #[derive(Clone, Copy, Debug, PartialEq)]
 #[cfg(feature = "float")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum FloatEvaluator {
+    /// Checks if a fact has a specific `f64` value (using the `float_cmp` crate for approximate
+    /// equality).
     EqualTo(f64),
+    /// Checks if a fact does not have a specific `f64` value (using the `float_cmp` crate for
+    /// approximate equality).
     NotEqualTo(f64),
+    /// Checks if a fact's value is less than a given `f64` (see `FloatRangeBound` for guidance
+    /// on inclusive/exclusive bounds).
     LessThan(FloatRangeBound),
+    /// Checks if a fact's value is greater than a given `f64` (see `FloatRangeBound` for
+    /// guidance on inclusive/exclusive bounds).
     GreaterThan(FloatRangeBound),
+    /// Checks if a fact's value is within a given range of `f64` values (see `FloatRangeBound`
+    /// for guidance on inclusive/exclusive bounds).
     InRange(FloatRangeBound, FloatRangeBound),
 }
 
@@ -58,22 +73,32 @@ impl Evaluator<f64> for FloatEvaluator {
 
 #[cfg(feature = "float")]
 impl FloatEvaluator {
+    /// Utility function for composing an instance of `FloatEvaluator` that checks
+    /// for values less than `value`.
     pub fn lt(value: f64) -> FloatEvaluator {
         Self::LessThan(FloatRangeBound::Exclusive(value))
     }
 
+    /// Utility function for composing an instance of `FloatEvaluator` that checks
+    /// for values less than or equal to `value`.
     pub fn lte(value: f64) -> FloatEvaluator {
         Self::LessThan(FloatRangeBound::Inclusive(value))
     }
 
+    /// Utility function for composing an instance of `FloatEvaluator` that checks
+    /// for values greater than `value`.
     pub fn gt(value: f64) -> FloatEvaluator {
         Self::GreaterThan(FloatRangeBound::Exclusive(value))
     }
 
+    /// Utility function for composing an instance of `FloatEvaluator` that checks
+    /// for values greater than or equal to `value`.
     pub fn gte(value: f64) -> FloatEvaluator {
         Self::GreaterThan(FloatRangeBound::Inclusive(value))
     }
 
+    /// Utility function for composing an instance of `FloatEvaluator` that checks
+    /// for values such that `lower` <= `value` < `upper`.
     pub fn range(lower: f64, upper: f64) -> FloatEvaluator {
         Self::InRange(
             FloatRangeBound::Inclusive(lower),
@@ -87,6 +112,7 @@ mod tests {
     use super::{Evaluator, FloatEvaluator, FloatRangeBound};
 
     #[test]
+
     fn in_range() {
         let evaluator = FloatEvaluator::InRange(
             FloatRangeBound::Exclusive(5.),
