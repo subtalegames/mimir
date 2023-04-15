@@ -2,14 +2,18 @@
 
 Visit the [releases page on GitHub][releases] for a list of all historical releases.
 
-## [main](https://github.com/subtalegames/mimir/tree/main/) (not released)
+## [v0.5.0](https://github.com/subtalegames/mimir/releases/tag/v0.5.0) (2023-04-15)
 
 * Added `Query::with_capacity`
 * Added `prelude` module (`use subtale_mimir::prelude::*`)
 * Implemented benchmark for ruleset evaluation performance
 * Created devcontainer configuration for GitHub codespaces development
-* Moved float-related features to separate module (`subtale_mimir::float`)
+* **BREAKING:** Moved float-related features to separate module (`subtale_mimir::float`)
 * Upgraded `indexmap` to `1.9.3` and `pnpm` (for docs site) to `8.1.0`
+* Implemented benchmark for ruleset instantiation (and sorting) performance
+* Added missing Rust documentation
+* Refactored codebase into separate modules (`rule` => `query`, `rule`, `ruleset`)
+* Changed `Ruleset::sort` to use `.sort_unstable_by_key` (~10% performance improvement)
 
 ## [v0.4.0](https://github.com/subtalegames/mimir/releases/tag/v0.4.0) (2023-02-27)
 

@@ -5,7 +5,10 @@ import { Callout } from 'nextra-theme-docs'
 Rulesets are collections of rules, represented in Rust as `Vec<Rule<...>>`.
 
 ```rs
-struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
+struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
+where
+    FactKey: std::hash::Hash + std::cmp::Eq,
+{
     rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>,
 }
 ```

@@ -4,10 +4,11 @@ import Hero from 'components/Hero'
 
 <div className="shadow">
     ```rs copy=false showLineNumbers
-    use subtale_mimir::{evaluator::{Evaluator, FloatEvaluator}, rule::{Query, Rule, Ruleset}};
+    use subtale_mimir::prelude::*;
 
     // create a rule requiring that five enemies have been killed
     let mut rule = Rule::new("You killed 5 enemies!");
+    // Rule<&str, f64, FloatEvaluator, &str>
     rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
 
     // create a more specific rule that also requires at least 2 doors to have been opened
@@ -20,6 +21,7 @@ import Hero from 'components/Hero'
 
     // run a query against the ruleset
     let mut query = Query::new();
+    // Query<&str, f64>
     query.insert("enemies_killed", 2.5 + 1.5 + 1.);
 
     assert_eq!(

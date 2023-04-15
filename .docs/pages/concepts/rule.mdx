@@ -5,7 +5,10 @@ import { Callout } from 'nextra-theme-docs'
 A `Rule` is a collection of facts and their evaluators (requirements) stored in a map, along with a specific outcome (`Outcome`). All evaluators in the rule must evaluate to true for the rule itself to be considered true.
 
 ```rs
-struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome> {
+struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
+where
+    FactKey: std::hash::Hash + std::cmp::Eq,
+{
     marker: PhantomData<FactType>,
     evaluators: IndexMap<FactKey, FactEvaluator>,
     pub outcome: Outcome,
