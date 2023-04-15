@@ -23,6 +23,10 @@ criterion = "0.4.0"
 name = "float_evaluator"
 harness = false
 
+[[bench]]
+name = "ruleset_evaluation"
+harness = false
+
 [features]
 serde = ["dep:serde", "indexmap/serde"]
 float = ["dep:float-cmp"]
