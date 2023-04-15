@@ -1,5 +1,4 @@
 {
-    "name": "mimir-docs",
     "private": true,
     "scripts": {
         "dev": "next"
@@ -20,5 +19,5 @@
     "volta": {
         "node": "18.12.1"
     },
-    "packageManager": "pnpm@7.21.0"
+    "packageManager": "pnpm@8.1.0"
 }
