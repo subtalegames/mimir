@@ -2,6 +2,15 @@
 
 Visit the [releases page on GitHub][releases] for a list of all historical releases.
 
+## [main](https://github.com/subtalegames/mimir/tree/main/) (not released)
+
+* Added `Query::with_capacity`
+* Added `prelude` module (`use subtale_mimir::prelude::*`)
+* Implemented benchmark for ruleset evaluation performance
+* Created devcontainer configuration for GitHub codespaces development
+* Moved float-related features to separate module (`subtale_mimir::float`)
+* Upgraded `indexmap` to `1.9.3` and `pnpm` (for docs site) to `8.1.0`
+
 ## [v0.4.0](https://github.com/subtalegames/mimir/releases/tag/v0.4.0) (2023-02-27)
 
 * Migrated library to Cargo workspace for future modularity
