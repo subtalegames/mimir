@@ -1,4 +1,4 @@
-> Mímir is a contextual query engine for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
+Mímir is a contextual query engine for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
 ## Documentation
 
@@ -18,19 +18,20 @@ Fundamentally speaking, Mímir is simply a Rust implementation of Elan's propose
 
 Your game's world is defined as a collection of facts: the player killed x amount of enemies, an NPC has opened y amount of doors, the player is currently near z NPC, etc.
 
-In Mímir, facts are collected together into a map ([`Query`][query]), where the key is the unique identifier of the fact, and the value is the fact's value (represented as a `f64`).
+In Mímir, facts are collected together into a map ([`Query<FactKey, FactValue>`][query]), where the key is the unique identifier of the fact, and the value is the fact's value.
 
-Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<T>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
+Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<FactKey, FactValue, FactEvaluator, Outcome>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
 
-Finally, rules can be stored together in collections known as rulesets ([`Ruleset<T>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+Finally, rules can be stored together in collections known as rulesets ([`Ruleset<FactKey, FactValue, FactEvaluator, Outcome>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
 ## Example
 
 ```rs
-use subtale_mimir::{evaluator::{Evaluator, FloatEvaluator}, rule::{Query, Rule, Ruleset}};
+use subtale_mimir::prelude::*;
 
 // create a rule requiring that five enemies have been killed
 let mut rule = Rule::new("You killed 5 enemies!");
+// Rule<&str, f64, FloatEvaluator, &str>
 rule.insert("enemies_killed", FloatEvaluator::EqualTo(5.));
 
 // create a more specific rule that also requires at least 2 doors to have been opened
@@ -43,11 +44,12 @@ let ruleset = Ruleset::new(vec![rule, more_specific_rule]);
 
 // run a query against the ruleset
 let mut query = Query::new();
+// Query<&str, f64>
 query.insert("enemies_killed", 2.5 + 1.5 + 1.);
 
 assert_eq!(
-ruleset.evaluate(&query).unwrap().outcome,
-"You killed 5 enemies!"
+    ruleset.evaluate(&query).unwrap().outcome,
+    "You killed 5 enemies!"
 );
 
 // run a more specific query against the ruleset
@@ -56,8 +58,8 @@ more_specific_query.insert("enemies_killed", 2.5 + 1.5 + 1.);
 more_specific_query.insert("doors_opened", 10.);
 
 assert_eq!(
-ruleset.evaluate(&more_specific_query).unwrap().outcome,
-"You killed 5 enemies and opened 2 doors!"
+    ruleset.evaluate(&more_specific_query).unwrap().outcome,
+    "You killed 5 enemies and opened 2 doors!"
 );
 ```
 
