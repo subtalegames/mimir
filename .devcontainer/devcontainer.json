@@ -1,0 +1,29 @@
+{
+	"name": "Rust",
+	"image": "mcr.microsoft.com/devcontainers/rust:0-1-buster",
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"telemetry.enableTelemetry": false,
+				"redhat.telemetry.enabled": false,
+				"vulnCost.sendStatistics": false,
+				"editor.renderWhitespace": "all",
+				"editor.renderControlCharacters": true,
+				"editor.formatOnSave": true,
+				"files.insertFinalNewline": true
+			},
+			"extensions": [
+				"serayuzgur.crates",
+				"bungcip.better-toml",
+				"a5huynh.vscode-ron",
+				"gruntfuggly.todo-tree",
+				"mkxml.vscode-filesize",
+				"seatonjiang.gitmoji-vscode",
+				"mutantdino.resourcemonitor",
+				"GitHub.vscode-pull-request-github",
+				"eamodio.gitlens",
+				"DavidAnson.vscode-markdownlint"
+			]
+		}
+	}
+}
