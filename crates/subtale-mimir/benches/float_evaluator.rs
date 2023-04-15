@@ -8,7 +8,7 @@ fn benchmark(c: &mut Criterion) {
         FloatRangeBound::Inclusive(25.),
     ));
 
-    c.bench_function("criterion evaluate", |b| {
+    c.bench_function("float_evaluator evaluate", |b| {
         b.iter(|| {
             evaluator.evaluate(black_box(15.));
         })

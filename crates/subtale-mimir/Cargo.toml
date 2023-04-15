@@ -26,6 +26,10 @@ harness = false
 name = "ruleset_evaluation"
 harness = false
 
+[[bench]]
+name = "ruleset_init"
+harness = false
+
 [features]
 serde = ["dep:serde", "indexmap/serde"]
 float = ["dep:float-cmp"]

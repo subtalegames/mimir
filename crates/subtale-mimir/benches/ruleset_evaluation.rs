@@ -1,7 +1,8 @@
 use criterion::{criterion_group, criterion_main, Criterion};
-use subtale_mimir::prelude::{FloatEvaluator, Query, Rule, Ruleset};
+use subtale_mimir::prelude::*;
 
-fn rule_evaluation_benchmark(c: &mut Criterion) {
+#[cfg(feature = "float")]
+fn benchmark(c: &mut Criterion) {
     let mut query = Query::new();
     query.insert("fact_1", 1.0);
     query.insert("fact_2", 5.0);
@@ -18,8 +19,10 @@ fn rule_evaluation_benchmark(c: &mut Criterion) {
 
     let ruleset = Ruleset::new(vec![rule_1, rule_2]);
 
-    c.bench_function("rule_evaluation", |b| b.iter(|| ruleset.evaluate(&query)));
+    c.bench_function("ruleset evaluate", |b| b.iter(|| ruleset.evaluate(&query)));
 }
 
-criterion_group!(benches, rule_evaluation_benchmark);
+#[cfg(feature = "float")]
+criterion_group!(benches, benchmark);
+#[cfg(feature = "float")]
 criterion_main!(benches);
