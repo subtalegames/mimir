@@ -1,5 +1,3 @@
-set shell := ["pwsh.exe", "-c"]
-
 fmt:
   cargo +nightly fmt
 
