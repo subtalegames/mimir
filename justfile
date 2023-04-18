@@ -7,10 +7,10 @@ clippy:
 lint: fmt clippy
 
 test:
-  cargo test --features float
+  cargo test --all-features
 
 bench:
-  cargo bench --features float
+  cargo bench --all-features
 
 docs:
   cd .docs
