@@ -4,20 +4,20 @@
         "dev": "next"
     },
     "dependencies": {
-        "@types/node": "^18.11.18",
-        "autoprefixer": "^10.4.13",
-        "next": "^13.1.1",
-        "nextra": "^2.0.3",
-        "nextra-theme-docs": "^2.0.3",
-        "postcss": "^8.4.21",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-youtube": "^10.1.0",
-        "tailwindcss": "^3.2.4",
-        "typescript": "^4.9.4"
+        "@types/node": "latest",
+        "autoprefixer": "latest",
+        "next": "latest",
+        "nextra": "latest",
+        "nextra-theme-docs": "latest",
+        "postcss": "latest",
+        "react": "latest",
+        "react-dom": "latest",
+        "react-youtube": "latest",
+        "tailwindcss": "latest",
+        "typescript": "latest"
     },
     "volta": {
         "node": "18.16.0"
     },
-    "packageManager": "pnpm@8.2.0"
+    "packageManager": "pnpm@latest"
 }

@@ -25,5 +25,8 @@
 				"DavidAnson.vscode-markdownlint"
 			]
 		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node:1": {}
 	}
 }
