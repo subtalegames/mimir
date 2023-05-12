@@ -6,18 +6,20 @@ use serde::{Deserialize, Serialize};
 
 use crate::{evaluator::Evaluator, query::Query};
 
-/// A `Rule` is a collection of facts and their evaluators (requirements) stored in a map, along with a specific
-/// outcome (`Outcome`). All evaluators in a rule must evaluate to `true` for the rule itself to be considered
-/// `true`.
+/// A `Rule` is a collection of facts and their evaluators (requirements) stored
+/// in a map, along with a specific outcome (`Outcome`). All evaluators in a
+/// rule must evaluate to `true` for the rule itself to be considered `true`.
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
 where
     FactKey: std::hash::Hash + std::cmp::Eq,
 {
     marker: PhantomData<FactType>,
-    /// The map of facts and evaluators that will be used to evaluate each fact's value.
+    /// The map of facts and evaluators that will be used to evaluate each
+    /// fact's value.
     pub evaluators: IndexMap<FactKey, FactEvaluator>,
-    /// The outcome of the rule that's returned during evaluation if the rule matches the supplied `Query` instance.
+    /// The outcome of the rule that's returned during evaluation if the rule
+    /// matches the supplied `Query` instance.
     pub outcome: Outcome,
 }
 
@@ -28,7 +30,8 @@ impl<
         Outcome,
     > Rule<FactKey, FactType, FactEvaluator, Outcome>
 {
-    /// Instantiates a new instance of `Rule` without allocating an underlying collection of evaluators.
+    /// Instantiates a new instance of `Rule` without allocating an underlying
+    /// collection of evaluators.
     ///
     /// Computes in `O(1)` time.
     pub fn new(outcome: Outcome) -> Self {
@@ -41,18 +44,19 @@ impl<
 
     /// Inserts a new evaluator for a specific fact key into the rule.
     ///
-    /// Computes in `O(1)` time (amortized average, depending on current capacity).
+    /// Computes in `O(1)` time (amortized average, depending on current
+    /// capacity).
     pub fn insert(&mut self, fact: FactKey, evaluator: FactEvaluator) {
         self.evaluators.insert(fact, evaluator);
     }
 
     /// Evaluates the rule against the provided query.
     ///
-    /// Returns `true` if all facts in the rule are present in the query and all fact evaluators
-    /// resolve to `true`, otherwise returns `false`.
+    /// Returns `true` if all facts in the rule are present in the query and all
+    /// fact evaluators resolve to `true`, otherwise returns `false`.
     ///
-    /// Computes in `O(n)` time (worst case). This is dependent on your evaluator implementation
-    /// evaluating in a constant time.
+    /// Computes in `O(n)` time (worst case). This is dependent on your
+    /// evaluator implementation evaluating in a constant time.
     pub fn evaluate(&self, query: &Query<FactKey, FactType>) -> bool {
         // IndexMap::len() has a time complexity of O(1), so we check this
         // against the query's length to avoid unnecessary iteration
@@ -83,7 +87,6 @@ impl<
 #[cfg(feature = "float")]
 mod tests {
     use super::*;
-
     use crate::float::FloatEvaluator;
 
     #[test]

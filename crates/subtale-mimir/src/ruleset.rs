@@ -4,21 +4,22 @@ use serde::{Deserialize, Serialize};
 
 use crate::{evaluator::Evaluator, query::Query, rule::Rule};
 
-/// A `Ruleset` is a collection of `Rule` instances, represented as a `Vec<Rule<...>>`.
+/// A `Ruleset` is a collection of `Rule` instances, represented as a
+/// `Vec<Rule<...>>`.
 ///
-/// Because Mímir evaluates rulesets by returning the most specific rule for a given query,
-/// the rules are stored in descending order of requirement count. This avoids scanning the
-/// entire ruleset for matching rules, as the first rules in the underlying collection are
-/// the most specific.
+/// Because Mímir evaluates rulesets by returning the most specific rule for a
+/// given query, the rules are stored in descending order of requirement count.
+/// This avoids scanning the entire ruleset for matching rules, as the first
+/// rules in the underlying collection are the most specific.
 ///
-/// Where possible, you should look to divide your game's entire database of rules into
-/// smaller rulesets that can be loaded in and out of memory depending on the game's
-/// current state.
+/// Where possible, you should look to divide your game's entire database of
+/// rules into smaller rulesets that can be loaded in and out of memory
+/// depending on the game's current state.
 ///
-/// For example, you might want to partition your rules into individual rulesets for each
-/// level/map/region of your game. Otherwise, you'll be subjecting yourself to an
-/// unnecessary performance cost by having Mímir evaluate rules that have no relevance to
-/// the game's current state.
+/// For example, you might want to partition your rules into individual rulesets
+/// for each level/map/region of your game. Otherwise, you'll be subjecting
+/// yourself to an unnecessary performance cost by having Mímir evaluate rules
+/// that have no relevance to the game's current state.
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
 where
@@ -54,9 +55,9 @@ impl<
 
     /// Evaluates the ruleset against the provided query.
     ///
-    /// Returns the most specific (most evaluators) rule in the ruleset that evaluates to true for the
-    /// provided query. If multiple rules evaluate to true with the same specificness, they are all
-    /// returned.
+    /// Returns the most specific (most evaluators) rule in the ruleset that
+    /// evaluates to true for the provided query. If multiple rules evaluate
+    /// to true with the same specificness, they are all returned.
     pub fn evaluate_all(
         &self,
         query: &Query<FactKey, FactType>,
@@ -78,9 +79,9 @@ impl<
 
     /// Evaluates the ruleset against the provided query.
     ///
-    /// Returns the most specific (most evaluators) rule in the ruleset that evaluates to true for the
-    /// provided query. If multiple rules evaluate to true with the same specificness, one is picked
-    /// at random.
+    /// Returns the most specific (most evaluators) rule in the ruleset that
+    /// evaluates to true for the provided query. If multiple rules evaluate
+    /// to true with the same specificness, one is picked at random.
     pub fn evaluate(
         &self,
         query: &Query<FactKey, FactType>,

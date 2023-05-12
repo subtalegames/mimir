@@ -2,11 +2,13 @@ use indexmap::IndexMap;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
-/// A `Query<FactKey, FactType>` represents a collection of facts about your video game's world, mapped from a fact's
-/// unique identifier (`FactKey`) to current value (`FactType`).
+/// A `Query<FactKey, FactType>` represents a collection of facts about your
+/// video game's world, mapped from a fact's unique identifier (`FactKey`) to
+/// current value (`FactType`).
 ///
-/// The logic for obtaining an instance of `Query` is outside the scope of Mímir: your game should already have systems
-/// in place that track state and various facts about your world.
+/// The logic for obtaining an instance of `Query` is outside the scope of
+/// Mímir: your game should already have systems in place that track state and
+/// various facts about your world.
 ///
 /// ```
 /// use subtale_mimir::prelude::*;
@@ -16,7 +18,8 @@ use serde::{Deserialize, Serialize};
 /// query.insert("current_level", 2);
 /// ```
 ///
-/// In reality, you will most likely use an enum for the `FactType` generic so you can store varying types in your query:
+/// In reality, you will most likely use an enum for the `FactType` generic so
+/// you can store varying types in your query:
 ///
 /// ```
 /// use subtale_mimir::prelude::*;
@@ -39,14 +42,16 @@ pub struct Query<FactKey, FactType>
 where
     FactKey: std::hash::Hash + std::cmp::Eq,
 {
-    /// The facts currently stored within the query (using an `IndexMap` as the data structure implementation).
+    /// The facts currently stored within the query (using an `IndexMap` as the
+    /// data structure implementation).
     pub facts: IndexMap<FactKey, FactType>,
 }
 
 impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
     Query<FactKey, FactType>
 {
-    /// Instantiates a new instance of `Query` without allocating an underlying `IndexMap`.
+    /// Instantiates a new instance of `Query` without allocating an underlying
+    /// `IndexMap`.
     ///
     /// Computes in `O(1)` time.
     pub fn new() -> Self {
@@ -55,7 +60,8 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
         }
     }
 
-    /// Instantiates a new instance of `Query` with a pre-allocated underlying `IndexMap` (unless `capacity` is zero).
+    /// Instantiates a new instance of `Query` with a pre-allocated underlying
+    /// `IndexMap` (unless `capacity` is zero).
     ///
     /// Computes in `O(n)` time.
     pub fn with_capacity(capacity: usize) -> Self {
@@ -64,22 +70,22 @@ impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
         }
     }
 
-    /// Inserts a new fact into the query (at the end of the query's underlying map).
+    /// Inserts a new fact into the query (at the end of the query's underlying
+    /// map).
     ///
-    /// If a fact already exists in the query with the same key, the value is overwritten (but the index position of the
-    /// fact in the query is retained).
+    /// If a fact already exists in the query with the same key, the value is
+    /// overwritten (but the index position of the fact in the query is
+    /// retained).
     ///
-    /// Computes in `O(1)` time (amortized average, depending on current capacity).
-    pub fn insert(&mut self, fact: FactKey, value: FactType) {
-        self.facts.insert(fact, value);
-    }
+    /// Computes in `O(1)` time (amortized average, depending on current
+    /// capacity).
+    pub fn insert(&mut self, fact: FactKey, value: FactType) { self.facts.insert(fact, value); }
 
-    /// Appends all facts from another query to the query (at the end of the query's underlying map).
+    /// Appends all facts from another query to the query (at the end of the
+    /// query's underlying map).
     ///
     /// Computes in `O(1)` time.
-    pub fn extend(&mut self, query: Query<FactKey, FactType>) {
-        self.facts.extend(query.facts);
-    }
+    pub fn extend(&mut self, query: Query<FactKey, FactType>) { self.facts.extend(query.facts); }
 }
 
 #[cfg(test)]
