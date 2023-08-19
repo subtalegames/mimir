@@ -1,10 +1,10 @@
 # Mímir
 
-[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml)][gh-workflow]
-[![Docs](https://img.shields.io/badge/docs-passing-brightgreen)][docs]
-[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen)][mit]
-[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen)][apache]
-![FOSSA scan](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsubtalegames%2Fmimir.svg?type=shield)
+[![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-white?style=flat-square&labelColor=%2389216B&color=%23DA4453)][oss]
+[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml?style=flat-square&labelColor=%2389216B&color=%23DA4453)][gh-workflow]
+[![Docs](https://img.shields.io/badge/docs-passing-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][docs]
+[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][mit]
+[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][apache]
 
 > Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
@@ -85,18 +85,6 @@ Without the following libraries, Mímir would not be where it is now:
 * [serde][serde]: used to offer methods of (de)serialization
 * [criterion][criterion]: used to write benchmarking test suites
 
-## Why Mímir?
-
-Internally at Subtale, we've adopted a naming convention around Norse mythology for tools, packages, and working titles for games.
-
-Quoting from [norse-mythology.org][mimir]:
-
-> Mímir is an exceptionally wise being and a counselor of the gods.
-
-We hope that this contextual query engine lives up to its name in being just as wise about your game's state and defined behaviours!
-
-*P.S. Acknowledging a happy coincidence in the naming of Mímir, we love all of the work done by the folks over at [Santa Monica Studio][sms] (especially on 2018's reboot of God of War)!*
-
 ## License
 
 Mímir is free and open source. Unless explicitly noted otherwise, all code in this repository is dual-licensed under the [MIT License][mit] and [Apache License, Version 2.0][apache].
@@ -107,6 +95,7 @@ This licensing approach is the de facto standard within the Rust ecosystem.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any additional terms or conditions.
 
+[oss]: https://oss.subtale.com
 [gh-workflow]: https://github.com/subtalegames/mimir/actions/workflows/rust.yml
 [docs]: https://mimir.subtale.com
 [tutorial]: https://mimir.subtale.com/tutorial
@@ -117,8 +106,6 @@ Unless you explicitly state otherwise, any contribution intentionally submitted 
 [evaluator]: https://mimir.subtale.com/concepts/evaluator
 [ruleset]: https://mimir.subtale.com/concepts/ruleset
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
-[mimir]: https://norse-mythology.org/gods-and-creatures/others/mimir/
-[sms]: https://sms.playstation.com
 [mit]: LICENSE-MIT
 [apache]: LICENSE-APACHE
 [float-cmp]: https://github.com/mikedilger/float-cmp
