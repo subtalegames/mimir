@@ -1,0 +1,3 @@
+tasks:
+  - before: cargo install just mdbook
+    init: cargo build
