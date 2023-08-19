@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs'
-
 # Rule
 
 A `Rule` is a collection of facts and their evaluators (requirements) stored in a map, along with a specific outcome (`Outcome`). All evaluators in the rule must evaluate to true for the rule itself to be considered true.
@@ -31,9 +29,7 @@ assert!(rule.evaluate(&query));
 
 In the above example, the rule evaluates to true for the supplied query because it's expecting 5 enemies to be killed (`enemies_killed`), and the query confirms the fact that 5 (`2.5 + 1.5 + 1`) have been killed.
 
-<Callout type="info">
-Our generic outcome type (`Outcome`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).
-</Callout>
+> ℹ️ Our generic outcome type (`Outcome`) for the example is just a standard boolean value (`true`). In the real-world, you'd probably use a more complex enum to denote different types of outcome (e.g. dialog, animation).
 
 ## Insertion order
 

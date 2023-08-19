@@ -1,9 +1,8 @@
-import Hero from 'components/Hero'
+# Introduction
 
-<Hero />
+Mímir is a contextual query engine for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
-<div className="shadow">
-    ```rs copy=false showLineNumbers
+```rs
     use subtale_mimir::prelude::*;
 
     // create a rule requiring that five enemies have been killed
@@ -39,4 +38,3 @@ import Hero from 'components/Hero'
         "You killed 5 enemies and opened 2 doors!"
     );
     ```
-</div>

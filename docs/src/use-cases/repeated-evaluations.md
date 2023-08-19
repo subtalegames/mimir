@@ -8,9 +8,9 @@ There a few different solutions to achieve this functionality, which we'll explo
 
 The naive approach would be to mutate the ruleset after evaluation to remove the rule that shouldn't be repeated. However, this approach has multiple drawbacks (and we **don't** recommend that you go down this route in your implementation).
 
-Firstly, as explained on the [performance page](/performance#ruleset-storage), creating (and modifying) a ruleset is expensive, because it needs to be (re)sorted in such a way that evaluations are more performant.
+Firstly, as explained on the [performance page](/performance.html#ruleset-storage), creating (and modifying) a ruleset is expensive, because it needs to be (re)sorted in such a way that evaluations are more performant.
 
-Also, as described on the [serialization page](/serialization), we recommend that your implementation uses serialized rulesets that are bundled as assets alongside your game's executable and then deserialized at runtime. By introducing the logic of removing rules after evaluation, you will also need to re-serialize your ruleset and overwrite your persistent assets.
+Also, as described on the [serialization page](/serialization.html), we recommend that your implementation uses serialized rulesets that are bundled as assets alongside your game's executable and then deserialized at runtime. By introducing the logic of removing rules after evaluation, you will also need to re-serialize your ruleset and overwrite your persistent assets.
 
 ## Storing evaluation history
 

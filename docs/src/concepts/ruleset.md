@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs'
-
 # Ruleset
 
 Rulesets are collections of rules, represented in Rust as `Vec<Rule<...>>`.
@@ -13,9 +11,7 @@ where
 }
 ```
 
-<Callout type="info">
-    Check out the [ruleset storage section](/performance#ruleset-storage) on the performance page for further details on how Mímir represents rulesets in Rust to improve performance when evaluating queries against them.
-</Callout>
+> ℹ️ Check out the [ruleset storage section](/performance.html#ruleset-storage) on the performance page for further details on how Mímir represents rulesets in Rust to improve performance when evaluating queries against them.
 
 ## Evaluation
 
@@ -55,6 +51,4 @@ In the above example, we define a ruleset with two rules. Both rules require tha
 
 The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement.
 
-<Callout type="info">
-    In the second query, although the simpler rule is satisfied, Mímir does not evaluate it as true because it's less specific (i.e. contains fewer evaluators).
-</Callout>
+> ℹ️ In the second query, although the simpler rule is satisfied, Mímir does not evaluate it as true because it's less specific (i.e. contains fewer evaluators).
