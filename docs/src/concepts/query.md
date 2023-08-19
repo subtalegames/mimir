@@ -11,4 +11,3 @@ where
 {
     facts: IndexMap<FactKey, FactType>,
 }
-```

@@ -1,7 +1,4 @@
-import { Callout } from 'nextra-theme-docs'
-import WIP from 'components/WIP'
-
-# Tutorial <WIP />
+# Tutorial (WIP)
 
 This guide serves as a tutorial for newcomers to Mímir; a hypothetical scenario is established for a game and then an exemplar, step-by-step implementation is provided.
 
@@ -15,15 +12,11 @@ This scenario can be easily achieved with Mímir; let's get started!
 
 ## Steps
 
-<div className="steps-container">
-
 ### Installation
 
 Start off by adding Mímir to your project's `Cargo.toml`, including the optional `float` feature (whose relevance will be explained later):
 
 ```toml
 [dependencies]
-subtale-mimir = { version = "0.5.0", features = ["float"] }
+subtale-mimir = { version = "0.5.1", features = ["float"] }
 ```
-
-</div>

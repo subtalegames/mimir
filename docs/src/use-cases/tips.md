@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs'
-
 # Loading screen tips
 
 For as long as most gamers can remember, video games have offered tips and hints on loading screens (and various other game states inbetween gameplay, e.g. lobbies).
@@ -18,7 +16,7 @@ enum Outcome {
 
 ## Defining some tips
 
-Now let's define some tips (represented as [rules](/concepts/rule) in Mímir):
+Now let's define some tips (represented as [rules](/concepts/rule.html) in Mímir):
 
 ```rs
 use subtale_mimir::prelude::*;
@@ -34,17 +32,13 @@ let mut finished_level_three = Rule::new(Outcome::Tip {
 });
 ```
 
-<Callout type="info">
-    In a production environment (i.e. distributing your game), it makes more sense to serialize your tips during development and include them in your distributed assets, ready to be [deserialized at runtime](/guide/serialization)!
-</Callout>
+> ℹ️ In a production environment (i.e. distributing your game), it makes more sense to serialize your tips during development and include them in your distributed assets, ready to be [deserialized at runtime](/serialization.html)!
 
 ### Adding requirements
 
-Without [evaluators](/concepts/evaluator) (requirements), these tips are pretty useless. Let's add some!
+Without [evaluators](/concepts/evaluator.html) (requirements), these tips are pretty useless. Let's add some!
 
-<Callout type="warning">
-    The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
-</Callout>
+> ⚠️ The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
 
 ```rs
 just_died.insert(
@@ -61,29 +55,25 @@ finished_level_three.insert(
 // `last_level_completed`: this logic is outside of Mímir's scope!
 ```
 
-<Callout type="info">
-    In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
-
-    Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
-</Callout>
+> ℹ️ In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
+>
+> Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
 
 ## Bundling the tips
 
-Now let's bundle the tips into a [ruleset](/concepts/ruleset) so we can evaluate them all against our game's current state in a performant manner:
+Now let's bundle the tips into a [ruleset](/concepts/ruleset.html) so we can evaluate them all against our game's current state in a performant manner:
 
 ```rs
 let tips = Ruleset::new(vec![just_died, finished_level_three]);
 ```
 
-<Callout type="warning">
-    As outlined on the [performance page](/performance#ruleset-storage), invoking `Ruleset::new` is expensive!
-
-    Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
-</Callout>
+> ⚠️ As outlined on the [performance page](/performance.html#ruleset-storage), invoking `Ruleset::new` is expensive!
+>
+> Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
 
 ## Retrieving a valid tip
 
-Now that are tips are stored in a rulset, we can evaluate the ruleset (supplying our game's current state as a [query](/concepts/query)) and see if any of our tips are applicable!
+Now that are tips are stored in a rulset, we can evaluate the ruleset (supplying our game's current state as a [query](/concepts/query.html)) and see if any of our tips are applicable!
 
 ```rs
 let mut current_state = Query::new();

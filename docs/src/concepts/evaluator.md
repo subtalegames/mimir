@@ -1,5 +1,3 @@
-import { Callout } from 'nextra-theme-docs'
-
 # Evaluator
 
 An evaluator is a trait that represents a predicate function evaluating against a value.
@@ -18,22 +16,16 @@ You can choose to create your own implementation of the trait, or use the provid
 
 In the real world, an evaluator represents a condition that must be true for a contextual event to take place. However, events will typically have many evaluators that need to evaluate to true, not just one!
 
-<Callout type="info">
-    An NPC might query Mímir to ensure that they're only commenting on another NPC's behaviour if they've not exhibited the same behaviour previously (to avoid being hypocritical).
-
-    *It could also function inversely if the NPC is intentionally a hypocrite!*
-</Callout>
+> ℹ️ An NPC might query Mímir to ensure that they're only commenting on another NPC's behaviour if they've not exhibited the same behaviour previously (to avoid being hypocritical).
 
 ## FloatEvaluator
 
-<Callout type="warning">
-    To use the pre-made `FloatEvaluator` implementation, you must enable the `float` feature in your project's `Cargo.toml`:
-
-    ```toml
-    [dependencies]
-    subtale-mimir = { version = "0.5.0", features = ["float"] }
-    ```
-</Callout>
+> ⚠️ To use the pre-made `FloatEvaluator` implementation, you must enable the `float` feature in your project's `Cargo.toml`:
+>
+> ```toml
+> [dependencies]
+> subtale-mimir = { version = "0.5.0", features = ["float"] }
+> ```
 
 The `FloatEvaluator` is a built-in implementation of the `Evaluator<T>` trait, allowing you to define evaluators that match against floating-point numbers.
 
@@ -49,9 +41,7 @@ enum FloatEvaluator {
 
 If you're interested in how we've implemented the `Evaluator<f64>` trait for `FloatEvaluator`, check out the [source code on GitHub][float-src]!
 
-<Callout type="info">
-    `FloatRangeBound` is an enum that holds a boundary value that can be inclusive (`FloatRangeBound::Inclusive(f64)`) or exclusive (`FloatRangeBound::Exclusive(f64)`).
-</Callout>
+> ℹ️ `FloatRangeBound` is an enum that holds a boundary value that can be inclusive (`FloatRangeBound::Inclusive(f64)`) or exclusive (`FloatRangeBound::Exclusive(f64)`).
 
 ### Helper functions
 
@@ -65,9 +55,7 @@ Several helper functions are exposed to easily instantiate `FloatEvaluator` with
 |    `FloatEvaluator::gte(5.)`     |                    `FloatEvaluator::GreaterThan(FloatRangeBound::Inclusive(5.))`                     |    `x ≥ 5`    |
 | `FloatEvaluator::range(5., 10.)` | `FloatEvaluator::InRange(FloatRangeBound::Inclusive(5.), RangeFloatRangeBoundBound::Exclusive(10.))` | `5 ≤ x < 10`  |
 
-<Callout type="info">
-    `FloatEvaluator::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
-</Callout>
+> ℹ️ `FloatEvaluator::range` is designed to mimic the functionality of [Python's built-in range function][py-range].
 
 ### Floating-point equality
 
