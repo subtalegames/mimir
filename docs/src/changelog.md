@@ -2,6 +2,11 @@
 
 Visit the [releases page on GitHub][releases] for a list of all historical releases.
 
+## [v0.5.1](https://github.com/subtalegames/mimir/releases/tag/v0.5.1) (2023-08-19)
+
+* Upgraded `indexmap` to `2.0` and `criterion` to `0.5`
+* Migrated from Nextra to mdBook for docs site
+
 ## [v0.5.0](https://github.com/subtalegames/mimir/releases/tag/v0.5.0) (2023-04-15)
 
 * Added `Query::with_capacity`

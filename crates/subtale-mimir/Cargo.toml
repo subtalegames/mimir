@@ -1,6 +1,6 @@
 [package]
 name = "subtale-mimir"
-version = "0.5.0"
+version = "0.5.1"
 edition = "2021"
 authors = ["Luke Carr <luke@subtale.com>"]
 description = "Contextual query engine for dynamic video games"
@@ -11,12 +11,12 @@ readme = "README.md"
 
 [dependencies]
 float-cmp = { version = "0.9", optional = true }
-indexmap = "1.9"
+indexmap = "2.0"
 rand = "0.8"
 serde = { version = "1.0", features = ["derive"], optional = true }
 
 [dev-dependencies]
-criterion = "0.4"
+criterion = "0.5"
 
 [[bench]]
 name = "float_evaluator"
