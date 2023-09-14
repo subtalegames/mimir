@@ -6,7 +6,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=%2314213D&color=%23FCA311)][mit]
 [![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=%2314213D&color=%23FCA311)][apache]
 
-> Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
+> Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialogue, animations) driven by their current world's state.
 
 ## Documentation
 
@@ -28,9 +28,9 @@ Your game's world is defined as a collection of facts: the player killed x amoun
 
 In Mímir, facts are collected together into a map ([`Query<FactKey, FactType>`][query]), where the key is the unique identifier of the fact, and the value is the fact's value.
 
-Also, your game will (most likey!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<FactKey, FactType, FactEvaluator, Outcome>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
+Also, your game will (most likely!) have predefined rules that define behaviour that should occur when one or more facts are true. We represent rules as a map ([`Rule<FactKey, FactType, FactEvaluator, Outcome>`][rule]), where the key is the unique identifier of the fact, and the value is a predicate ([`Evaluator`][evaluator]) that is evaluated against the fact's value.
 
-Finally, rules can be stored together in collections known as rulesets ([`Ruleset<FactKey, FactType, FactEvaluator, Outcome>`][ruleset]). Rulesets allow a query to be evaluated against many rules at once: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
+Finally, rules can be stored together in collections known as rulesets ([`Ruleset<FactKey, FactType, FactEvaluator, Outcome>`][ruleset]). Rulesets allow a query to be evaluated against many rules simultaneously: Mímir will always look to match a query against the rule in the ruleset with the most requirements (i.e. more specific). *(If multiple rules are matched with the same specificity, one is chosen at random.)*
 
 ## Example
 
@@ -73,7 +73,7 @@ assert_eq!(
 
 In the above example, we define a ruleset with two rules. Both rules require that 5 enemies have been killed, but one rule is more specific (also requiring that more than 2 doors have been opened).
 
-The first query evaluates to the simpler rule, because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satistfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains fewer requirements).
+The first query evaluates to the simpler rule because the query does not satisfy the doors opened requirement. However, the second query evaluates to the more complex rule because the query *does* satisfy the doors opened requirement (note that even though the simpler rule is still satisfied, Mímir does not evaluate it as true because it's less specific/contains fewer requirements).
 
 ## Libraries used
 
@@ -81,7 +81,7 @@ Without the following libraries, Mímir would not be where it is now:
 
 * [float-cmp][float-cmp]: used to approximate floating-point number comparisons
 * [indexmap][indexmap]: used as the implementation of underlying map structures
-* [rand][rand]: used to randomly selected evaluated rules when multiple are evaluated as true
+* [rand][rand]: used to randomly select evaluated rules when multiple are evaluated as true
 * [serde][serde]: used to offer methods of (de)serialization
 * [criterion][criterion]: used to write benchmarking test suites
 
