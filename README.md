@@ -1,10 +1,10 @@
 # Mímir
 
-[![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-white?style=flat-square&labelColor=%2389216B&color=%23DA4453)][oss]
-[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml?style=flat-square&labelColor=%2389216B&color=%23DA4453)][gh-workflow]
-[![Docs](https://img.shields.io/badge/docs-passing-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][docs]
-[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][mit]
-[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=%2389216B&color=%23DA4453)][apache]
+[![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-white?style=flat-square&labelColor=%2314213D&color=%23FCA311)][oss]
+[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml?style=flat-square&labelColor=%2314213D&color=%23FCA311)][gh-workflow]
+[![Docs](https://img.shields.io/badge/docs-passing-brightgreen?style=flat-square&labelColor=%2314213D&color=%23FCA311)][docs]
+[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=%2314213D&color=%23FCA311)][mit]
+[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=%2314213D&color=%23FCA311)][apache]
 
 > Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialog, animations) driven by their current world's state.
 
