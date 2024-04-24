@@ -1,11 +1,11 @@
 ![Mimir GitHub banner](https://github.com/subtalegames/mimir/assets/24438483/52b941cb-7abc-4941-a824-109ba00cc9e5)
 
-[![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-white?style=flat-square&labelColor=14213D&color=E5E5E5)][oss]
-[![Chat on Discord](https://img.shields.io/badge/chat_on-discord-white?style=flat-square&labelColor=14213D&color=E5E5E5)][discord]
-[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml?style=flat-square&labelColor=14213D&color=E5E5E5)][gh-workflow]
-[![Docs](https://img.shields.io/badge/docs-passing-brightgreen?style=flat-square&labelColor=14213D&color=E5E5E5)][docs]
-[![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=14213D&color=E5E5E5)][mit]
-[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=14213D&color=E5E5E5)][apache]
+[![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-f0f0f1?style=flat-square&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI3MTQuOTciIGhlaWdodD0iNDYxLjEzIiB2aWV3Qm94PSIwIDAgNzE0Ljk3IDQ2MS4xMyI%2BCiAgPGcgaWQ9IkxheWVyXzEtMiIgZGF0YS1uYW1lPSJMYXllciAxIj4KICAgIDxnPgogICAgICA8cGF0aCBkPSJNMzU3LjQ4LDM1Ny41MWgtMjIyLjc4Yy05Ljk1LDAtMTkuNS0zLjk1LTI2LjU0LTEwLjk5TDAsMjM4LjM1aDIzOC4zMmwxMTkuMTYsMTE5LjE2WiIgZmlsbD0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIwIi8%2BCiAgICAgIDxwYXRoIGQ9Ik03MTQuOTcsMjM4LjM1bC0yMTEuNzgsMjExLjc4Yy0xNC42NiwxNC42Ni0zOC40MiwxNC42Ni01My4wOCwwbC05Mi42Mi05Mi42MiwxMTkuMTYtMTE5LjE2aDIzOC4zMloiIGZpbGw9IiNmZmYiIHN0cm9rZS13aWR0aD0iMCIvPgogICAgICA8cGF0aCBkPSJNNDc2LjY3LDExMC43M3YxNi45MWMtMjguMzEsMC01Ni42OCwxMC44Mi03OC4zMiwzMi40Ny0yMS42NSwyMS41OC0zMi40MSw0OS44OS0zMi40MSw3OC4yNmgtMTYuOTFjMC0yOC4zMS0xMC44Mi01Ni42OC0zMi40Ny03OC4zMi0yMS41OC0yMS42NS00OS44OS0zMi40LTc4LjI2LTMyLjR2LTE2LjkxYzI4LjMxLDAsNTYuNjgtMTAuODIsNzguMzItMzIuNDcsMjEuNjUtMjEuNTgsMzIuNDEtNDkuODksMzIuNDEtNzguMjZoMTYuOTFjMCwyOC4zMSwxMC44Miw1Ni42OCwzMi40Nyw3OC4zMiwyMS41OCwyMS42NSw0OS44OSwzMi40LDc4LjI2LDMyLjRaIiBmaWxsPSIjZmZmIiBzdHJva2Utd2lkdGg9IjAiLz4KICAgIDwvZz4KICA8L2c%2BCjwvc3ZnPg%3D%3D&logoColor=f0f0f1&labelColor=2060d3)][oss]
+[![Chat on Discord](https://img.shields.io/badge/chat_on-discord-f0f0f1?style=flat-square&logo=discord&logoColor=f0f0f1&labelColor=2060d3)][discord]
+[![Rust](https://img.shields.io/github/actions/workflow/status/subtalegames/mimir/rust.yml?style=flat-square&color=f0f0f1&logo=github-actions&logoColor=f0f0f1&labelColor=2060d3)][gh-workflow]
+[![Docs](https://img.shields.io/badge/docs-passing-brightgreen?style=flat-square&color=f0f0f1&logo=github-actions&logoColor=f0f0f1&labelColor=2060d3)][docs]
+[![MIT License](https://img.shields.io/badge/license-MIT-f0f0f1?style=flat-square&labelColor=2060d3)][mit]
+[![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-f0f0f1?style=flat-square&labelColor=2060d3)][apache]
 
 > Mimir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialogue, animations) driven by their current world's state.
 
