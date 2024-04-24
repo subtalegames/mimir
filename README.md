@@ -1,4 +1,4 @@
-# Mímir
+![Mimir GitHub banner](https://github.com/subtalegames/mimir/assets/24438483/52b941cb-7abc-4941-a824-109ba00cc9e5)
 
 [![OSS by Subtale](https://img.shields.io/badge/oss_by-subtale-white?style=flat-square&labelColor=14213D&color=E5E5E5)][oss]
 [![Chat on Discord](https://img.shields.io/badge/chat_on-discord-white?style=flat-square&labelColor=14213D&color=E5E5E5)][discord]
@@ -7,7 +7,7 @@
 [![MIT License](https://img.shields.io/badge/license-MIT-brightgreen?style=flat-square&labelColor=14213D&color=E5E5E5)][mit]
 [![Apache-2.0 License](https://img.shields.io/badge/license-Apache--2.0-brightgreen?style=flat-square&labelColor=14213D&color=E5E5E5)][apache]
 
-> Mímir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialogue, animations) driven by their current world's state.
+> Mimir is a contextual query engine (implemented in Rust) for video games with dynamic events (e.g. dialogue, animations) driven by their current world's state.
 
 ## Documentation
 
