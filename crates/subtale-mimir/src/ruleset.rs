@@ -23,15 +23,15 @@ use crate::{evaluator::Evaluator, query::Query, rule::Rule};
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Ruleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
 where
-    FactKey: std::hash::Hash + std::cmp::Eq,
+    FactKey: std::hash::Hash + Eq,
 {
     rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>,
 }
 
 impl<
-        FactKey: std::hash::Hash + std::cmp::Eq,
-        FactType: std::marker::Copy,
-        FactEvaluator: Evaluator<FactType> + std::marker::Copy,
+        FactKey: std::hash::Hash + Eq,
+        FactType: Copy,
+        FactEvaluator: Evaluator<FactType> + Copy,
         Outcome,
     > Ruleset<FactKey, FactType, FactEvaluator, Outcome>
 {
