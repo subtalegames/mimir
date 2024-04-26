@@ -40,14 +40,14 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Query<FactKey, FactType>
 where
-    FactKey: std::hash::Hash + std::cmp::Eq,
+    FactKey: std::hash::Hash + Eq,
 {
     /// The facts currently stored within the query (using an `IndexMap` as the
     /// data structure implementation).
     pub facts: IndexMap<FactKey, FactType>,
 }
 
-impl<FactKey: std::hash::Hash + std::cmp::Eq, FactType: std::marker::Copy>
+impl<FactKey: std::hash::Hash + Eq, FactType: Copy>
     Query<FactKey, FactType>
 {
     /// Instantiates a new instance of `Query` without allocating an underlying

@@ -12,7 +12,7 @@ use crate::{evaluator::Evaluator, query::Query};
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub struct Rule<FactKey, FactType, FactEvaluator: Evaluator<FactType>, Outcome>
 where
-    FactKey: std::hash::Hash + std::cmp::Eq,
+    FactKey: std::hash::Hash + Eq,
 {
     marker: PhantomData<FactType>,
     /// The map of facts and evaluators that will be used to evaluate each
@@ -24,9 +24,9 @@ where
 }
 
 impl<
-        FactKey: std::hash::Hash + std::cmp::Eq,
-        FactType: std::marker::Copy,
-        FactEvaluator: Evaluator<FactType> + std::marker::Copy,
+        FactKey: std::hash::Hash + Eq,
+        FactType: Copy,
+        FactEvaluator: Evaluator<FactType> + Copy,
         Outcome,
     > Rule<FactKey, FactType, FactEvaluator, Outcome>
 {
