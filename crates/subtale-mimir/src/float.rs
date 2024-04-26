@@ -1,4 +1,3 @@
-#[cfg(feature = "float")]
 use float_cmp::approx_eq;
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
@@ -8,7 +7,6 @@ use super::evaluator::Evaluator;
 /// Represents a bound of a range used during float comparisons made by
 /// `FloatEvaluator`.
 #[derive(Clone, Copy, Debug, PartialEq)]
-#[cfg(feature = "float")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum FloatRangeBound {
     /// A bound that's exclusive of the contained value.
@@ -20,7 +18,6 @@ pub enum FloatRangeBound {
 /// A reference implementation of the `Evaluator` trait that allows for
 /// comparisons against facts with a value type of `f64`.
 #[derive(Clone, Copy, Debug, PartialEq)]
-#[cfg(feature = "float")]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum FloatEvaluator {
     /// Checks if a fact has a specific `f64` value (using the `float_cmp` crate
@@ -40,7 +37,6 @@ pub enum FloatEvaluator {
     InRange(FloatRangeBound, FloatRangeBound),
 }
 
-#[cfg(feature = "float")]
 impl Evaluator<f64> for FloatEvaluator {
     fn evaluate(self, value: f64) -> bool {
         match self {
@@ -72,7 +68,6 @@ impl Evaluator<f64> for FloatEvaluator {
     }
 }
 
-#[cfg(feature = "float")]
 impl FloatEvaluator {
     /// Utility function for composing an instance of `FloatEvaluator` that
     /// checks for values less than `value`.
