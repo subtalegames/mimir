@@ -11,7 +11,7 @@
 //! FactType>`), where the key is the unique identifier of the fact, and the
 //! value is the fact's value.
 //!
-//! Also, your game will (most likey!) have predefined rules that define
+//! Also, your game will (most likely!) have predefined rules that define
 //! behaviour that should occur when one or more facts are true. We
 //! represent rules as a map (`Rule<FactKey, FactType, FactEvaluator,
 //! Outcome>`), where the key is the unique identifier of the fact, and the
