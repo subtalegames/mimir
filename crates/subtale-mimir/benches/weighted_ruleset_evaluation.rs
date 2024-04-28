@@ -17,9 +17,9 @@ fn benchmark(c: &mut Criterion) {
     rule_2.insert("fact_2", FloatEvaluator::lt(6.0));
     rule_2.insert("fact_3", FloatEvaluator::range(9.0, 12.0));
 
-    let ruleset = Ruleset::new(vec![rule_1, rule_2]);
+    let ruleset = WeightedRuleset::new(vec![rule_1, rule_2]);
 
-    c.bench_function("ruleset evaluate", |b| b.iter(|| ruleset.evaluate(&query)));
+    c.bench_function("weighted ruleset evaluate", |b| b.iter(|| ruleset.evaluate(&query)));
 }
 
 #[cfg(feature = "float")]
