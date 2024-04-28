@@ -47,9 +47,7 @@ where
     pub facts: IndexMap<FactKey, FactType>,
 }
 
-impl<FactKey: std::hash::Hash + Eq, FactType: Copy>
-    Query<FactKey, FactType>
-{
+impl<FactKey: std::hash::Hash + Eq, FactType: Copy> Query<FactKey, FactType> {
     /// Instantiates a new instance of `Query` without allocating an underlying
     /// `IndexMap`.
     ///

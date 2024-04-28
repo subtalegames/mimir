@@ -19,7 +19,9 @@ fn benchmark(c: &mut Criterion) {
 
     let ruleset = WeightedRuleset::new(vec![rule_1, rule_2]);
 
-    c.bench_function("weighted ruleset evaluate", |b| b.iter(|| ruleset.evaluate(&query)));
+    c.bench_function("weighted ruleset evaluate", |b| {
+        b.iter(|| ruleset.evaluate(&query))
+    });
 }
 
 #[cfg(feature = "float")]

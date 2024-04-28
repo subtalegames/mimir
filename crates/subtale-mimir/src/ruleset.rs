@@ -1,4 +1,5 @@
 use std::collections::BTreeMap;
+
 #[cfg(feature = "serde")]
 use serde::{Deserialize, Serialize};
 
@@ -46,9 +47,7 @@ impl<
     for SimpleRuleset<FactKey, FactType, FactEvaluator, Outcome>
 {
     /// Creates a new ruleset from the provided collection of rules.
-    fn new(rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>) -> Self {
-        Self { rules }
-    }
+    fn new(rules: Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>) -> Self { Self { rules } }
 
     /// Evaluates the ruleset against the provided query.
     ///
@@ -76,16 +75,17 @@ pub struct WeightedRuleset<FactKey, FactType, FactEvaluator: Evaluator<FactType>
 where
     FactKey: std::hash::Hash + Eq,
 {
-    /// The collection of rules that make up the ruleset, indexed by their weight
-    /// (which defaults to the number of evaluators in the rule, but can be
-    /// overridden).
+    /// The collection of rules that make up the ruleset, indexed by their
+    /// weight (which defaults to the number of evaluators in the rule, but
+    /// can be overridden).
     rules: BTreeMap<isize, Vec<Rule<FactKey, FactType, FactEvaluator, Outcome>>>,
 
-    /// The number of rules in the weight with the most rules. This is effectively
-    /// the maximum number of rules that will be evaluated for a given query.
+    /// The number of rules in the weight with the most rules. This is
+    /// effectively the maximum number of rules that will be evaluated for a
+    /// given query.
     ///
-    /// With this, we can pre-allocate the space for the rules that will be evaluated
-    /// for a given query.
+    /// With this, we can pre-allocate the space for the rules that will be
+    /// evaluated for a given query.
     largest_weight_cardinality: usize,
 }
 
@@ -188,9 +188,7 @@ mod tests {
         more_specific_query.insert("enemies_killed", 5.);
         more_specific_query.insert("doors_opened", 10.);
 
-        assert_eq!(
-            ruleset.evaluate(&more_specific_query).len(), 2,
-        );
+        assert_eq!(ruleset.evaluate(&more_specific_query).len(), 2,);
     }
 
     #[test]
@@ -236,7 +234,11 @@ mod tests {
         more_specific_query.insert("doors_opened", 10.);
 
         assert_eq!(
-            ruleset.evaluate(&more_specific_query).first().unwrap().outcome,
+            ruleset
+                .evaluate(&more_specific_query)
+                .first()
+                .unwrap()
+                .outcome,
             "You killed 5 enemies and opened 2 doors!"
         );
     }
