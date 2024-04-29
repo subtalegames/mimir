@@ -32,13 +32,17 @@ let mut finished_level_three = Rule::new(Outcome::Tip {
 });
 ```
 
-> ℹ️ In a production environment (i.e. distributing your game), it makes more sense to serialize your tips during development and include them in your distributed assets, ready to be [deserialized at runtime](/serialization.html)!
+::: tip
+In a production environment (i.e. distributing your game), it makes more sense to serialize your tips during development and include them in your distributed assets, ready to be [deserialized at runtime](/serialization.html)!
+:::
 
 ### Adding requirements
 
 Without [evaluators](/concepts/evaluator.html) (requirements), these tips are pretty useless. Let's add some!
 
-> ⚠️ The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
+::: warning
+The `FloatEvaluator` implementation used in this example requires enabling the `float` feature in your project's `Cargo.toml`!
+:::
 
 ```rs
 just_died.insert(
@@ -55,9 +59,11 @@ finished_level_three.insert(
 // `last_level_completed`: this logic is outside of Mímir's scope!
 ```
 
-> ℹ️ In the above example, we mimick a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
->
-> Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
+::: tip
+In the above example, we mimic a `bool` by checking if the float's value is equal to `1.0` (`FloatEvaluator::EqualTo(1.)`).
+
+Alternatively, you could write your own implementation of `Evaluator` that can evaluate boolean values.
+:::
 
 ## Bundling the tips
 
@@ -67,9 +73,11 @@ Now let's bundle the tips into a [ruleset](/concepts/ruleset.html) so we can eva
 let tips = Ruleset::new(vec![just_died, finished_level_three]);
 ```
 
-> ⚠️ As outlined on the [performance page](/performance.html#ruleset-storage), invoking `Ruleset::new` is expensive!
->
-> Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
+::: warning
+As outlined on the [performance page](/performance.html#ruleset-storage), invoking `Ruleset::new` is expensive!
+
+Instead of creating the ruleset each time your game enters a loading screen state, you should setup your ruleset once during your game's initial load.
+:::
 
 ## Retrieving a valid tip
 

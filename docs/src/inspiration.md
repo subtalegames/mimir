@@ -9,6 +9,8 @@ Mímir is heavily inspired (both in concept and general architecture) by [Elan R
   </div>
 </div>
 
-Fundamentally speaking, Mímir is simply a Rust implementation of Elan's proposed system for dynamic dialog. However, Mímir does offer some differences and/or extensions that cater specifically to games developed internally at Subtale.
+Fundamentally speaking, Mímir is simply a Rust implementation of Elan's proposed system for dynamic dialogue.
+
+However, Mímir does offer some differences and/or extensions that cater specifically to games developed internally at Subtale, as well as expanding in scope to include general purpose rule evaluation (not limited to dialogue).
 
 [gdc]: https://www.youtube.com/watch?v=tAbBID3N64A
