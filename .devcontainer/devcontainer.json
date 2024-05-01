@@ -1,6 +1,6 @@
 {
 	"name": "Rust",
-	"image": "mcr.microsoft.com/devcontainers/rust:0-1-buster",
+	"image": "mcr.microsoft.com/devcontainers/rust:1-1-buster",
 	"customizations": {
 		"vscode": {
 			"settings": {
