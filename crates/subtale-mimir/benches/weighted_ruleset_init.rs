@@ -5,7 +5,7 @@ use subtale_mimir::prelude::*;
 fn benchmark(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
-    let mut group = c.benchmark_group("ruleset init");
+    let mut group = c.benchmark_group("weighted ruleset init");
 
     for &num_rules in &[10, 100, 1_000, 10_000] {
         group.bench_function(format!("{} rules", num_rules), |b| {
@@ -20,7 +20,7 @@ fn benchmark(c: &mut Criterion) {
                     })
                     .collect();
 
-                let _ruleset = Ruleset::new(rules);
+                let _ruleset = WeightedRuleset::new(rules);
             });
         });
     }

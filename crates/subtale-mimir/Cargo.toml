@@ -4,7 +4,7 @@ version = "0.5.1"
 edition = "2021"
 authors = ["Luke Carr <luke@subtale.com>"]
 description = "Contextual query engine for dynamic video games"
-homepage = "https://mimir.subtale.com"
+homepage = "https://mimir.subtale.dev"
 repository = "https://github.com/subtalegames/mimir"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
@@ -12,22 +12,22 @@ readme = "README.md"
 [dependencies]
 float-cmp = { version = "0.9", optional = true }
 indexmap = "2.2"
-rand = "0.8"
 serde = { version = "1.0", features = ["derive"], optional = true }
 
 [dev-dependencies]
 criterion = "0.5"
+rand = "0.8"
 
 [[bench]]
 name = "float_evaluator"
 harness = false
 
 [[bench]]
-name = "ruleset_evaluation"
+name = "weighted_ruleset_evaluation"
 harness = false
 
 [[bench]]
-name = "ruleset_init"
+name = "weighted_ruleset_init"
 harness = false
 
 [features]

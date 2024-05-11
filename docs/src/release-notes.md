@@ -1,4 +1,4 @@
-# Changelog
+# Release notes
 
 Visit the [releases page on GitHub][releases] for a list of all historical releases.
 

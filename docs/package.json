@@ -1,0 +1,15 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "vitepress": "^1.1.4"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  }
+}
